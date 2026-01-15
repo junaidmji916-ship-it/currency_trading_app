@@ -36,10 +36,13 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
     final productProvider = Provider.of<ProductProvider>(context);
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF0F8FF), // Light blue background
       appBar: AppBar(
-        title: Text('Create Sell Order'),
+        backgroundColor: const Color(0xFF1565C0), // Dark blue
+        foregroundColor: Colors.white,
+        title: const Text('Create Sell Order'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -52,14 +55,20 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
             children: [
               Text(
                 'Sell Order Details',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1565C0), // Dark blue text
+                ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'Create a new sell order for currency/product',
-                style: TextStyle(color: Colors.grey[600]),
+                style: TextStyle(
+                  color: Color(0xFF1976D2).withOpacity(0.8),
+                ), // Medium blue text
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Date Picker
               InkWell(
@@ -67,28 +76,81 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                 child: InputDecorator(
                   decoration: InputDecoration(
                     labelText: 'Date*',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.calendar_today),
+                    labelStyle: TextStyle(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Color(0xFFBBDEFB),
+                      ), // Light blue border
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Color(0xFF1976D2),
+                      ), // Medium blue when focused
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Color(0xFFBBDEFB),
+                      ), // Light blue border
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    prefixIcon: Icon(
+                      Icons.calendar_today,
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue icon
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(DateFormat('dd/MM/yyyy').format(_selectedDate)),
-                      Icon(Icons.arrow_drop_down, color: Colors.grey),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF1976D2),
+                      ), // Medium blue icon
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               // Customer Name
               TextFormField(
                 controller: _customerNameController,
                 decoration: InputDecoration(
                   labelText: 'Customer Name*',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
                   hintText: 'Enter customer name',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.person,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -97,16 +159,41 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               // Customer Address
               TextFormField(
                 controller: _customerAddressController,
                 decoration: InputDecoration(
                   labelText: 'Customer Address*',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
                   hintText: 'Enter customer address',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.location_on),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.location_on,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 maxLines: 3,
                 validator: (value) {
@@ -116,21 +203,56 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               // Product Selection
               DropdownButtonFormField<Product>(
                 decoration: InputDecoration(
                   labelText: 'Product/Currency*',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.currency_exchange),
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.currency_exchange,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
+                dropdownColor: Colors.white,
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Color(0xFF1976D2),
+                ), // Medium blue icon
+                borderRadius: BorderRadius.circular(8),
+                style: TextStyle(color: Color(0xFF1565C0)), // Dark blue text
                 initialValue: _selectedProduct,
                 items: productProvider.products.map((Product product) {
                   return DropdownMenuItem<Product>(
                     value: product,
                     child: Text(
                       '${product.productName} (${product.productCode})',
+                      style: TextStyle(
+                        color: Color(0xFF1565C0),
+                      ), // Dark blue text
                     ),
                   );
                 }).toList(),
@@ -146,7 +268,7 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 10),
 
               // Quantity and Rate in row
               Row(
@@ -156,9 +278,34 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                       controller: _quantityController,
                       decoration: InputDecoration(
                         labelText: 'Quantity*',
+                        labelStyle: TextStyle(
+                          color: Color(0xFF1976D2),
+                        ), // Medium blue
                         hintText: 'e.g., 1000',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.format_list_numbered),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFFBBDEFB),
+                          ), // Light blue border
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFF1976D2),
+                          ), // Medium blue when focused
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFFBBDEFB),
+                          ), // Light blue border
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        prefixIcon: Icon(
+                          Icons.format_list_numbered,
+                          color: Color(0xFF1976D2),
+                        ), // Medium blue icon
                       ),
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
@@ -177,15 +324,40 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                       },
                     ),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   Expanded(
                     child: TextFormField(
                       controller: _rateController,
                       decoration: InputDecoration(
                         labelText: 'Rate*',
+                        labelStyle: TextStyle(
+                          color: Color(0xFF1976D2),
+                        ), // Medium blue
                         hintText: 'e.g., 75.5',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.attach_money),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFFBBDEFB),
+                          ), // Light blue border
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFF1976D2),
+                          ), // Medium blue when focused
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFFBBDEFB),
+                          ), // Light blue border
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        prefixIcon: Icon(
+                          Icons.attach_money,
+                          color: Color(0xFF1976D2),
+                        ), // Medium blue icon
                       ),
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
@@ -207,10 +379,9 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                 ],
               ),
 
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // Calculate and show total
-              // In create_sell_order_screen.dart, update total display:
               Consumer<AuthProvider>(
                 builder: (context, authProvider, child) {
                   final userCurrency =
@@ -218,7 +389,14 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                   final currencySymbol = CurrencyHelper.getSymbol(userCurrency);
 
                   return Card(
-                    color: Colors.green[50],
+                    color: Color(0xFFE3F2FD), // Light blue background
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
+                        color: Color(0xFFBBDEFB),
+                      ), // Light blue border
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
@@ -226,14 +404,17 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                         children: [
                           Text(
                             'Total Amount:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1565C0), // Dark blue text
+                            ),
                           ),
                           Text(
                             '$currencySymbol${_calculateTotal().toStringAsFixed(2)}',
                             style: TextStyle(
-                              fontSize: 16, // Reduced from 18
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.green[800],
+                              color: Color(0xFF1976D2), // Medium blue text
                             ),
                           ),
                         ],
@@ -243,44 +424,40 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                 },
               ),
 
-              SizedBox(height: 30),
-
-              // Status info
-              Card(
-                color: Colors.orange[50],
-                child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.info, color: Colors.orange),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          'Order will be created with Pending status. '
-                          'You can mark as Paid and Delivered later.',
-                          style: TextStyle(color: Colors.orange[800]),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-
-              SizedBox(height: 30),
+              const SizedBox(height: 10),
 
               // Submit Button
               _isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFF1976D2),
+                        ), // Medium blue progress
+                      ),
+                    )
                   : SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(
+                            0xFF1976D2,
+                          ), // Medium blue background
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 2,
+                        ),
                         onPressed: () async {
                           if (!_formKey.currentState!.validate()) return;
                           if (_selectedProduct == null) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Please select a product'),
+                                content: const Text('Please select a product'),
+                                backgroundColor: Color(
+                                  0xFF1976D2,
+                                ), // Medium blue
                               ),
                             );
                             return;
@@ -305,27 +482,72 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
                           if (success) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
+                                content: const Text(
                                   'Sell order created successfully!',
                                 ),
+                                backgroundColor: Color(
+                                  0xFF1976D2,
+                                ), // Medium blue
                               ),
                             );
                             Navigator.pop(context);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Failed to create sell order'),
-                                backgroundColor: Colors.red,
+                                content: const Text(
+                                  'Failed to create sell order',
+                                ),
+                                backgroundColor: Color(
+                                  0xFF1565C0,
+                                ), // Dark blue for error
                               ),
                             );
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           'Create Sell Order',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
+
+              const SizedBox(height: 10),
+
+              // Status info
+              Card(
+                color: Color(0xFFE3F2FD), // Light blue background
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(
+                    color: Color(0xFFBBDEFB),
+                  ), // Light blue border
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.info,
+                        color: Color(0xFF1976D2),
+                      ), // Medium blue icon
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'Order will be created with Pending status. '
+                          'You can mark as Paid and Delivered later.',
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 223, 133, 16),
+                          ), // Medium blue text
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
@@ -339,6 +561,16 @@ class _CreateSellOrderScreenState extends State<CreateSellOrderScreen> {
       initialDate: _selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Color(0xFF1976D2), // Medium blue for date picker
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != _selectedDate) {
       setState(() {

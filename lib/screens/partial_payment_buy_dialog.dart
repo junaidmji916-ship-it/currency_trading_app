@@ -1,4 +1,4 @@
-// File: lib/screens/partial_payment_buy_dialog.dart - UPDATED
+// File: lib/screens/partial_payment_buy_dialog.dart - BLUE THEME
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/buy_order_provider.dart';
@@ -9,12 +9,14 @@ class PartialPaymentBuyDialog extends StatefulWidget {
   final BuyOrder order;
   final String userCurrency;
   final Map<String, dynamic>? paymentTransaction; // For editing
+  final String? note;
 
   const PartialPaymentBuyDialog({
     super.key,
     required this.order,
     required this.userCurrency,
     this.paymentTransaction,
+    this.note,
   });
 
   @override
@@ -49,6 +51,7 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
       // New payment
       _amountController.text = widget.order.pendingPaymentAmount
           .toStringAsFixed(2);
+      _noteController.text = widget.note ?? '';
     }
   }
 
@@ -63,11 +66,24 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
     final paidPercentage = order.paymentPercentage;
 
     return AlertDialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: Row(
         children: [
-          Icon(Icons.payment, color: _isEditing ? Colors.orange : Colors.green),
-          SizedBox(width: 10),
-          Text(_isEditing ? 'Edit Payment' : 'Add Payment'),
+          Icon(
+            Icons.payment,
+            color: _isEditing
+                ? const Color(0xFFF57C00) // Orange for editing
+                : const Color(0xFF388E3C), // Green for new payment
+          ),
+          const SizedBox(width: 10),
+          Text(
+            _isEditing ? 'Edit Payment' : 'Add Payment',
+            style: const TextStyle(
+              color: Color(0xFF1565C0), // Dark blue
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
       content: SingleChildScrollView(
@@ -77,9 +93,17 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Payment Summary
+              // Payment Summary Card
               Card(
-                color: Colors.green[50],
+                color: const Color(0xFFE3F2FD), // Light blue background
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: const BorderSide(
+                    color: Color(0xFFBBDEFB), // Light blue border
+                    width: 1,
+                  ),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -87,74 +111,107 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total Amount:'),
+                          const Text(
+                            'Total Amount:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               order.totalAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF0D47A1),
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Already Paid:'),
+                          const Text(
+                            'Already Paid:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               order.paidAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(color: Colors.green[700]),
+                            style: const TextStyle(
+                              color: Color(0xFF388E3C), // Green
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Pending:'),
+                          const Text(
+                            'Pending:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               pendingAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(color: Colors.orange[700]),
+                            style: const TextStyle(
+                              color: Color(0xFFF57C00), // Orange
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       LinearProgressIndicator(
                         value: paidPercentage / 100,
                         backgroundColor: Colors.grey[300],
-                        color: Colors.green,
+                        color: paidPercentage == 100
+                            ? const Color(0xFF388E3C) // Green for fully paid
+                            : const Color(0xFF1976D2), // Blue for partial
                         minHeight: 8,
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         '${paidPercentage.toStringAsFixed(1)}% Paid',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF1976D2),
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Payment Amount
               TextFormField(
                 controller: _amountController,
                 decoration: InputDecoration(
                   labelText: 'Payment Amount*',
+                  labelStyle: const TextStyle(color: Color(0xFF1976D2)),
                   hintText: 'Enter amount',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.attach_money),
+                  border: const OutlineInputBorder(),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF1565C0)),
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.attach_money,
+                    color: Color(0xFF1976D2),
+                  ),
                   suffixText: widget.userCurrency,
+                  suffixStyle: const TextStyle(color: Color(0xFF1976D2)),
                 ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter amount';
@@ -171,28 +228,38 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                   }
                   return null;
                 },
+                style: const TextStyle(color: Color(0xFF0D47A1)),
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Payment Method
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Payment Method',
+                  labelStyle: TextStyle(color: Color(0xFF1976D2)),
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.payment),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF1565C0)),
+                  ),
+                  prefixIcon: Icon(Icons.payment, color: Color(0xFF1976D2)),
                 ),
+                dropdownColor: Colors.white,
+                style: const TextStyle(color: Color(0xFF0D47A1)),
                 value: _paymentMethod,
                 items: [
-                  DropdownMenuItem(value: 'cash', child: Text('Cash')),
+                  DropdownMenuItem(value: 'cash', child: const Text('Cash')),
                   DropdownMenuItem(
                     value: 'bank_transfer',
-                    child: Text('Bank Transfer'),
+                    child: const Text('Bank Transfer'),
                   ),
-                  DropdownMenuItem(value: 'cheque', child: Text('Cheque')),
-                  DropdownMenuItem(value: 'card', child: Text('Card')),
-                  DropdownMenuItem(value: 'upi', child: Text('UPI')),
-                  DropdownMenuItem(value: 'other', child: Text('Other')),
+                  DropdownMenuItem(
+                    value: 'cheque',
+                    child: const Text('Cheque'),
+                  ),
+                  DropdownMenuItem(value: 'card', child: const Text('Card')),
+                  DropdownMenuItem(value: 'upi', child: const Text('UPI')),
+                  DropdownMenuItem(value: 'other', child: const Text('Other')),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -201,30 +268,40 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Reference Number
               TextFormField(
                 controller: _referenceController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Reference Number (Optional)',
+                  labelStyle: TextStyle(color: Color(0xFF1976D2)),
                   hintText: 'e.g., Transaction ID, Cheque No.',
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.receipt),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF1565C0)),
+                  ),
+                  prefixIcon: Icon(Icons.receipt, color: Color(0xFF1976D2)),
                 ),
+                style: const TextStyle(color: Color(0xFF0D47A1)),
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Note
               TextFormField(
                 controller: _noteController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Note (Optional)',
+                  labelStyle: TextStyle(color: Color(0xFF1976D2)),
                   border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.note),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF1565C0)),
+                  ),
+                  prefixIcon: Icon(Icons.note, color: Color(0xFF1976D2)),
                 ),
                 maxLines: 2,
+                style: const TextStyle(color: Color(0xFF0D47A1)),
               ),
             ],
           ),
@@ -237,20 +314,25 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
               final confirmed = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Delete Payment'),
-                  content: Text(
+                  backgroundColor: Colors.white,
+                  title: const Text(
+                    'Delete Payment',
+                    style: TextStyle(color: Color(0xFF1565C0)),
+                  ),
+                  content: const Text(
                     'Are you sure you want to delete this payment record?',
+                    style: TextStyle(color: Color(0xFF1976D2)),
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: Text(
+                      child: const Text(
                         'Delete',
-                        style: TextStyle(color: Colors.red),
+                        style: TextStyle(color: Color(0xFFD32F2F)),
                       ),
                     ),
                   ],
@@ -258,7 +340,6 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
               );
 
               if (confirmed == true && context.mounted) {
-                // Delete the payment transaction
                 final transactionId = widget.paymentTransaction!['id'];
                 final success = await buyOrderProvider.deletePaymentTransaction(
                   orderId: order.id,
@@ -268,22 +349,30 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                 if (success && context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('Payment deleted successfully'),
-                      backgroundColor: Colors.green,
+                      content: const Text('Payment deleted successfully'),
+                      backgroundColor: const Color(0xFF388E3C),
                     ),
                   );
                   Navigator.pop(context, {'deleted': true});
                 }
               }
             },
-            child: Text('Delete', style: TextStyle(color: Colors.red)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Color(0xFFD32F2F)),
+            ),
           ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text(
+            'Cancel',
+            style: TextStyle(color: Color(0xFF1976D2)),
+          ),
         ),
         _isProcessing
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1565C0)),
+              )
             : ElevatedButton(
                 onPressed: () async {
                   if (!_formKey.currentState!.validate()) return;
@@ -314,8 +403,8 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                       if (success && context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Payment updated successfully'),
-                            backgroundColor: Colors.green,
+                            content: const Text('Payment updated successfully'),
+                            backgroundColor: const Color(0xFF388E3C),
                           ),
                         );
                         Navigator.pop(context, {'updated': true});
@@ -348,7 +437,7 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                               content: Text(
                                 'Payment of ${CurrencyHelper.formatAmount(amount, widget.userCurrency)} recorded successfully',
                               ),
-                              backgroundColor: Colors.green,
+                              backgroundColor: const Color(0xFF388E3C),
                             ),
                           );
                           Navigator.pop(context, true);
@@ -360,7 +449,7 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Error: $e'),
-                          backgroundColor: Colors.red,
+                          backgroundColor: const Color(0xFFD32F2F),
                         ),
                       );
                     }
@@ -370,10 +459,13 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                     }
                   }
                 },
-                child: Text(_isEditing ? 'Update Payment' : 'Record Payment'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _isEditing ? Colors.orange : Colors.green,
+                  backgroundColor: _isEditing
+                      ? const Color(0xFFF57C00) // Orange for edit
+                      : const Color(0xFF388E3C), // Green for new payment
+                  foregroundColor: Colors.white,
                 ),
+                child: Text(_isEditing ? 'Update Payment' : 'Record Payment'),
               ),
       ],
     );

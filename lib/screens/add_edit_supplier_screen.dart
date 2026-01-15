@@ -45,10 +45,13 @@ class _AddEditSupplierScreenState extends State<AddEditSupplierScreen> {
     final title = isEdit ? 'Edit Supplier' : 'Add Supplier';
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF0F8FF), // Light blue background
       appBar: AppBar(
+        backgroundColor: const Color(0xFF1565C0), // Dark blue
+        foregroundColor: Colors.white,
         title: Text(title),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -61,23 +64,54 @@ class _AddEditSupplierScreenState extends State<AddEditSupplierScreen> {
             children: [
               Text(
                 'Supplier Details',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1565C0), // Dark blue text
+                ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'Add supplier information for buy orders',
-                style: TextStyle(color: Colors.grey[600]),
+                style: TextStyle(
+                  color: Color(0xFF1976D2).withOpacity(0.8),
+                ), // Medium blue text
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Supplier Name
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
                   labelText: 'Supplier Name*',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
                   hintText: 'e.g., John Traders, ABC Corp',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.person,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -86,18 +120,32 @@ class _AddEditSupplierScreenState extends State<AddEditSupplierScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
-
-              // Address
+              const SizedBox(height: 20),
+              // Address field - increased maxLines from 3 to 5
               TextFormField(
                 controller: _addressController,
                 decoration: InputDecoration(
                   labelText: 'Address*',
+                  labelStyle: TextStyle(color: Color(0xFF1976D2)),
                   hintText: 'Full address of supplier',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.location_on),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFBBDEFB)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFF1976D2)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: Color(0xFFBBDEFB)),
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(Icons.location_on, color: Color(0xFF1976D2)),
                 ),
-                maxLines: 3,
+                maxLines: 10, // Changed from 3 to 5
+                minLines: 3, // Optional: Set minimum lines
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter address';
@@ -105,41 +153,106 @@ class _AddEditSupplierScreenState extends State<AddEditSupplierScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
-
+              const SizedBox(height: 20),
               // Phone
               TextFormField(
                 controller: _phoneController,
                 decoration: InputDecoration(
                   labelText: 'Phone (Optional)',
-                  hintText: 'e.g., +91 9876543210',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.phone),
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
+                  hintText: 'e.g., +971 50*******',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.phone,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 keyboardType: TextInputType.phone,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Email
               TextFormField(
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email (Optional)',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
                   hintText: 'e.g., supplier@example.com',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.email),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.email,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Submit Button
               _isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFF1976D2),
+                        ), // Medium blue progress
+                      ),
+                    )
                   : SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(
+                            0xFF1976D2,
+                          ), // Medium blue background
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 2,
+                        ),
                         onPressed: () async {
                           if (!_formKey.currentState!.validate()) return;
 
@@ -182,6 +295,9 @@ class _AddEditSupplierScreenState extends State<AddEditSupplierScreen> {
                                       ? 'Supplier updated successfully!'
                                       : 'Supplier added successfully!',
                                 ),
+                                backgroundColor: Color(
+                                  0xFF1976D2,
+                                ), // Medium blue
                               ),
                             );
                             Navigator.pop(context);
@@ -193,14 +309,19 @@ class _AddEditSupplierScreenState extends State<AddEditSupplierScreen> {
                                       ? 'Failed to update supplier'
                                       : 'Failed to add supplier',
                                 ),
-                                backgroundColor: Colors.red,
+                                backgroundColor: Color(
+                                  0xFF1565C0,
+                                ), // Dark blue for error
                               ),
                             );
                           }
                         },
                         child: Text(
                           isEdit ? 'Update Supplier' : 'Add Supplier',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),

@@ -410,7 +410,11 @@ class BuyOrderProvider with ChangeNotifier {
   }
 
   // Update the existing undoPayment method
-  Future<bool> undoPayment(String orderId, {double? amount}) async {
+  Future<bool> undoPayment(
+    String orderId, {
+    double? amount,
+    required String note,
+  }) async {
     try {
       final order = _buyOrders.firstWhere((order) => order.id == orderId);
       double newPaidAmount = order.paidAmount;
@@ -446,6 +450,164 @@ class BuyOrderProvider with ChangeNotifier {
     } catch (e) {
       if (kDebugMode) print('Error undoing payment: $e');
       return false;
+    }
+  }
+
+  Future<bool> updatePayment({
+    required String orderId,
+    required String paymentId,
+    required double newAmount,
+    required String newNote,
+    required DateTime newDate,
+  }) async {
+    try {
+      final paymentRef = FirebaseFirestore.instance
+          .collection('buyOrders')
+          .doc(orderId)
+          .collection('payments')
+          .doc(paymentId);
+
+      await paymentRef.update({
+        'amount': newAmount,
+        'note': newNote,
+        'date': newDate.toIso8601String(),
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print('Error updating payment: $e');
+      return false;
+    }
+  }
+
+  Future<bool> adjustPaidAmount({
+    required String orderId,
+    required double adjustment,
+  }) async {
+    try {
+      final orderRef = FirebaseFirestore.instance
+          .collection('buyOrders')
+          .doc(orderId);
+
+      await orderRef.update({
+        'paidAmount': FieldValue.increment(adjustment),
+        'updatedAt': DateTime.now().toIso8601String(),
+      });
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print('Error adjusting paid amount: $e');
+      return false;
+    }
+  }
+
+  Future<bool> deletePayment({
+    required String orderId,
+    required String paymentId,
+  }) async {
+    try {
+      final paymentRef = FirebaseFirestore.instance
+          .collection('buyOrders')
+          .doc(orderId)
+          .collection('payments')
+          .doc(paymentId);
+
+      // Get payment amount before deleting
+      final paymentDoc = await paymentRef.get();
+      final amount = paymentDoc.data()?['amount'] ?? 0.0;
+
+      // Delete payment
+      await paymentRef.delete();
+
+      // Adjust order's paid amount
+      await adjustPaidAmount(
+        orderId: orderId,
+        adjustment: -amount, // Subtract the deleted amount
+      );
+
+      notifyListeners();
+      return true;
+    } catch (e) {
+      print('Error deleting payment: $e');
+      return false;
+    }
+  }
+
+  // Add this method to your BuyOrderProvider class
+  Future<void> loadBuyOrdersWithPayments() async {
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final snapshot = await FirebaseService.firestore
+          .collection('buy_orders')
+          .orderBy('date', descending: true)
+          .get();
+
+      _buyOrders = await Future.wait(
+        snapshot.docs.map((doc) async {
+          // Load payment transactions
+          final paymentSnapshot = await FirebaseService.firestore
+              .collection('buy_orders')
+              .doc(doc.id)
+              .collection('payment_transactions')
+              .orderBy('date', descending: true)
+              .get();
+
+          // Convert to payment history format
+          List<Map<String, dynamic>> paymentHistory = [];
+          double totalPaid = 0.0;
+
+          for (var paymentDoc in paymentSnapshot.docs) {
+            final paymentData = paymentDoc.data();
+            final amount = (paymentData['amount'] as num?)?.toDouble() ?? 0.0;
+            totalPaid += amount;
+
+            paymentHistory.add({
+              'paymentId': paymentDoc.id,
+              'amount': amount,
+              'date': (paymentData['date'] as Timestamp)
+                  .toDate()
+                  .toIso8601String(),
+              'note': paymentData['note'] ?? '',
+              'paymentMethod': paymentData['paymentMethod'] ?? 'cash',
+              'referenceNumber': paymentData['referenceNumber'],
+            });
+          }
+
+          // Get order data
+          // ignore: unnecessary_cast
+          Map<String, dynamic> orderData = doc.data() as Map<String, dynamic>;
+
+          // Create order with updated payment history
+          return BuyOrder(
+            id: doc.id,
+            date: (orderData['date'] as Timestamp).toDate(),
+            supplierName: orderData['supplierName'] ?? '',
+            supplierAddress: orderData['supplierAddress'] ?? '',
+            productId: orderData['productId'] ?? '',
+            productName: orderData['productName'] ?? '',
+            productCode: orderData['productCode'] ?? '',
+            quantity: (orderData['quantity'] as num).toDouble(),
+            rate: (orderData['rate'] as num).toDouble(),
+            totalAmount: (orderData['totalAmount'] as num).toDouble(),
+            status: orderData['status'] ?? 'pending',
+            paid: orderData['paid'] ?? false,
+            paidAmount: totalPaid, // Use calculated total from transactions
+            paymentHistory: paymentHistory,
+            createdAt: (orderData['createdAt'] as Timestamp).toDate(),
+            createdBy: orderData['createdBy'] ?? '',
+          );
+        }),
+      );
+    } catch (e) {
+      if (kDebugMode) print('Error loading buy orders with payments: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

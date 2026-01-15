@@ -67,11 +67,14 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
     }
 
     return Scaffold(
+      backgroundColor: const Color(0xFFF0F8FF), // Light blue background
       appBar: AppBar(
-        title: Text('Edit Sell Order'),
+        backgroundColor: const Color(0xFF1565C0), // Dark blue
+        foregroundColor: Colors.white,
+        title: const Text('Edit Sell Order'),
         actions: [
           IconButton(
-            icon: Icon(Icons.delete, color: Colors.red),
+            icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: () => _showDeleteDialog(context, sellOrderProvider),
           ),
         ],
@@ -85,14 +88,21 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
             children: [
               Text(
                 'Edit Sell Order',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1565C0), // Dark blue text
+                ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'ID: ${widget.order.id.substring(0, 8)}...',
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                style: TextStyle(
+                  color: Color(0xFF1976D2).withOpacity(0.8),
+                  fontSize: 12,
+                ), // Medium blue text
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Date Picker
               InkWell(
@@ -100,27 +110,80 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                 child: InputDecorator(
                   decoration: InputDecoration(
                     labelText: 'Date*',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.calendar_today),
+                    labelStyle: TextStyle(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Color(0xFFBBDEFB),
+                      ), // Light blue border
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Color(0xFF1976D2),
+                      ), // Medium blue when focused
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: BorderSide(
+                        color: Color(0xFFBBDEFB),
+                      ), // Light blue border
+                    ),
+                    filled: true,
+                    fillColor: Colors.white,
+                    prefixIcon: Icon(
+                      Icons.calendar_today,
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue icon
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(_formatDate(_selectedDate)),
-                      Icon(Icons.arrow_drop_down, color: Colors.grey),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: Color(0xFF1976D2),
+                      ), // Medium blue icon
                     ],
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Customer Name
               TextFormField(
                 controller: _customerNameController,
                 decoration: InputDecoration(
                   labelText: 'Customer Name*',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.person),
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.person,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -129,15 +192,40 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Customer Address
               TextFormField(
                 controller: _customerAddressController,
                 decoration: InputDecoration(
                   labelText: 'Customer Address*',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.location_on),
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.location_on,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 maxLines: 3,
                 validator: (value) {
@@ -147,31 +235,66 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Product Selection (Read-only since we can't change product)
               InputDecorator(
                 decoration: InputDecoration(
                   labelText: 'Product/Currency',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.currency_exchange),
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.currency_exchange,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       '${_selectedProduct?.productName} (${_selectedProduct?.productCode})',
+                      style: TextStyle(
+                        color: Color(0xFF1565C0),
+                      ), // Dark blue text
                     ),
-                    Icon(Icons.lock, size: 16, color: Colors.grey),
+                    Icon(
+                      Icons.lock,
+                      size: 16,
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue icon
                   ],
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 'Note: Product cannot be changed for existing orders',
-                style: TextStyle(color: Colors.grey[600], fontSize: 12),
+                style: TextStyle(
+                  color: Color(0xFF1976D2).withOpacity(0.8),
+                  fontSize: 12,
+                ), // Medium blue text
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Quantity and Rate in row
               Row(
@@ -181,8 +304,33 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                       controller: _quantityController,
                       decoration: InputDecoration(
                         labelText: 'Quantity*',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.format_list_numbered),
+                        labelStyle: TextStyle(
+                          color: Color(0xFF1976D2),
+                        ), // Medium blue
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFFBBDEFB),
+                          ), // Light blue border
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFF1976D2),
+                          ), // Medium blue when focused
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFFBBDEFB),
+                          ), // Light blue border
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        prefixIcon: Icon(
+                          Icons.format_list_numbered,
+                          color: Color(0xFF1976D2),
+                        ), // Medium blue icon
                       ),
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
@@ -201,14 +349,39 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                       },
                     ),
                   ),
-                  SizedBox(width: 15),
+                  const SizedBox(width: 15),
                   Expanded(
                     child: TextFormField(
                       controller: _rateController,
                       decoration: InputDecoration(
                         labelText: 'Rate*',
-                        border: OutlineInputBorder(),
-                        prefixIcon: Icon(Icons.attach_money),
+                        labelStyle: TextStyle(
+                          color: Color(0xFF1976D2),
+                        ), // Medium blue
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFFBBDEFB),
+                          ), // Light blue border
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFF1976D2),
+                          ), // Medium blue when focused
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                            color: Color(0xFFBBDEFB),
+                          ), // Light blue border
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        prefixIcon: Icon(
+                          Icons.attach_money,
+                          color: Color(0xFF1976D2),
+                        ), // Medium blue icon
                       ),
                       keyboardType: TextInputType.numberWithOptions(
                         decimal: true,
@@ -230,7 +403,7 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                 ],
               ),
 
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
 
               // Calculate and show total
               Consumer<AuthProvider>(
@@ -239,7 +412,14 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                       authProvider.userData?['transactionCurrency'] ?? 'USD';
 
                   return Card(
-                    color: Colors.green[50],
+                    color: Color(0xFFE3F2FD), // Light blue background
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      side: BorderSide(
+                        color: Color(0xFFBBDEFB),
+                      ), // Light blue border
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
@@ -247,7 +427,10 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                         children: [
                           Text(
                             'Total Amount:',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1565C0), // Dark blue text
+                            ),
                           ),
                           Text(
                             CurrencyHelper.formatAmount(
@@ -257,7 +440,7 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                              color: Colors.green[800],
+                              color: Color(0xFF1976D2), // Medium blue text
                             ),
                           ),
                         ],
@@ -267,15 +450,31 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                 },
               ),
 
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
 
               // Submit Button
               _isLoading
-                  ? Center(child: CircularProgressIndicator())
+                  ? Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFF1976D2),
+                        ), // Medium blue progress
+                      ),
+                    )
                   : SizedBox(
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(
+                            0xFF1976D2,
+                          ), // Medium blue background
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 2,
+                        ),
                         onPressed: () async {
                           if (!_formKey.currentState!.validate()) return;
 
@@ -299,24 +498,34 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
                           if (success) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text(
+                                content: const Text(
                                   'Sell order updated successfully!',
                                 ),
+                                backgroundColor: Color(
+                                  0xFF1976D2,
+                                ), // Medium blue
                               ),
                             );
                             Navigator.pop(context);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Failed to update sell order'),
-                                backgroundColor: Colors.red,
+                                content: const Text(
+                                  'Failed to update sell order',
+                                ),
+                                backgroundColor: Color(
+                                  0xFF1565C0,
+                                ), // Dark blue for error
                               ),
                             );
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           'Update Sell Order',
-                          style: TextStyle(fontSize: 16),
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
@@ -333,6 +542,16 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
       initialDate: _selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Color(0xFF1976D2), // Medium blue for date picker
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null && picked != _selectedDate) {
       setState(() {
@@ -359,16 +578,35 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Delete Sell Order'),
+        title: Text(
+          'Delete Sell Order',
+          style: TextStyle(color: Color(0xFF1565C0)), // Dark blue text
+        ),
         content: Text(
           'Are you sure you want to delete this sell order? This action cannot be undone.',
+          style: TextStyle(color: Color(0xFF1976D2)), // Medium blue text
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Color(0xFFE3F2FD)), // Light blue border
+        ),
+        backgroundColor: Colors.white,
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Color(0xFF1976D2)), // Medium blue text
+            ),
           ),
-          TextButton(
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF1976D2), // Medium blue background
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
             onPressed: () async {
               Navigator.pop(context);
 
@@ -378,19 +616,22 @@ class _EditSellOrderScreenState extends State<EditSellOrderScreen> {
 
               if (success) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Sell order deleted successfully')),
+                  SnackBar(
+                    content: const Text('Sell order deleted successfully'),
+                    backgroundColor: Color(0xFF1976D2), // Medium blue
+                  ),
                 );
                 Navigator.pop(context); // Go back to orders list
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Failed to delete sell order'),
-                    backgroundColor: Colors.red,
+                    content: const Text('Failed to delete sell order'),
+                    backgroundColor: Color(0xFF1565C0), // Dark blue for error
                   ),
                 );
               }
             },
-            child: Text('Delete', style: TextStyle(color: Colors.red)),
+            child: const Text('Delete'),
           ),
         ],
       ),

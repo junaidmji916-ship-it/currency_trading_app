@@ -49,9 +49,12 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
     return AlertDialog(
       title: Row(
         children: [
-          Icon(Icons.payment, color: Colors.green),
+          Icon(Icons.payment, color: Color(0xFF1976D2)), // Medium blue
           SizedBox(width: 10),
-          Text('Add Payment'),
+          Text(
+            'Add Payment',
+            style: TextStyle(color: Color(0xFF1565C0)),
+          ), // Dark blue
         ],
       ),
       content: SingleChildScrollView(
@@ -63,7 +66,14 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
             children: [
               // Payment Summary
               Card(
-                color: Colors.green[50],
+                color: Color(0xFFE3F2FD), // Light blue background
+                elevation: 2,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: BorderSide(
+                    color: Color(0xFFBBDEFB),
+                  ), // Light blue border
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -71,13 +81,19 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total Amount:'),
+                          Text(
+                            'Total Amount:',
+                            style: TextStyle(color: Color(0xFF1565C0)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               order.totalAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1565C0), // Dark blue
+                            ),
                           ),
                         ],
                       ),
@@ -85,13 +101,19 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Already Paid:'),
+                          Text(
+                            'Already Paid:',
+                            style: TextStyle(color: Color(0xFF1565C0)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               order.paymentReceivedAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(color: Colors.green[700]),
+                            style: TextStyle(
+                              color: Colors
+                                  .green[700], // Keep green for paid amount
+                            ),
                           ),
                         ],
                       ),
@@ -99,13 +121,19 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Pending:'),
+                          Text(
+                            'Pending:',
+                            style: TextStyle(color: Color(0xFF1565C0)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               pendingAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(color: Colors.orange[700]),
+                            style: TextStyle(
+                              color:
+                                  Colors.orange[700], // Keep orange for pending
+                            ),
                           ),
                         ],
                       ),
@@ -113,13 +141,16 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                       LinearProgressIndicator(
                         value: paidPercentage / 100,
                         backgroundColor: Colors.grey[300],
-                        color: Colors.green,
+                        color: Colors.green, // Keep green for progress
                         minHeight: 8,
                       ),
                       SizedBox(height: 4),
                       Text(
                         '${paidPercentage.toStringAsFixed(1)}% Paid',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Color(0xFF1976D2), // Medium blue
+                        ),
                       ),
                     ],
                   ),
@@ -133,9 +164,34 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                 controller: _amountController,
                 decoration: InputDecoration(
                   labelText: 'Payment Amount*',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
                   hintText: 'Enter amount',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.attach_money),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.attach_money,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                   suffixText: widget.userCurrency,
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -163,20 +219,85 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(
                   labelText: 'Payment Method',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.payment),
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.payment,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
+                dropdownColor: Colors.white,
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Color(0xFF1976D2),
+                ), // Medium blue icon
+                borderRadius: BorderRadius.circular(8),
+                style: TextStyle(color: Color(0xFF1565C0)), // Dark blue text
                 initialValue: _paymentMethod,
                 items: [
-                  DropdownMenuItem(value: 'cash', child: Text('Cash')),
+                  DropdownMenuItem(
+                    value: 'cash',
+                    child: Text(
+                      'Cash',
+                      style: TextStyle(color: Color(0xFF1565C0)),
+                    ),
+                  ),
                   DropdownMenuItem(
                     value: 'bank_transfer',
-                    child: Text('Bank Transfer'),
+                    child: Text(
+                      'Bank Transfer',
+                      style: TextStyle(color: Color(0xFF1565C0)),
+                    ),
                   ),
-                  DropdownMenuItem(value: 'cheque', child: Text('Cheque')),
-                  DropdownMenuItem(value: 'card', child: Text('Card')),
-                  DropdownMenuItem(value: 'upi', child: Text('UPI')),
-                  DropdownMenuItem(value: 'other', child: Text('Other')),
+                  DropdownMenuItem(
+                    value: 'cheque',
+                    child: Text(
+                      'Cheque',
+                      style: TextStyle(color: Color(0xFF1565C0)),
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 'card',
+                    child: Text(
+                      'Card',
+                      style: TextStyle(color: Color(0xFF1565C0)),
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 'upi',
+                    child: Text(
+                      'UPI',
+                      style: TextStyle(color: Color(0xFF1565C0)),
+                    ),
+                  ),
+                  DropdownMenuItem(
+                    value: 'other',
+                    child: Text(
+                      'Other',
+                      style: TextStyle(color: Color(0xFF1565C0)),
+                    ),
+                  ),
                 ],
                 onChanged: (value) {
                   setState(() {
@@ -192,9 +313,34 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                 controller: _referenceController,
                 decoration: InputDecoration(
                   labelText: 'Reference Number (Optional)',
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
                   hintText: 'e.g., Transaction ID, Cheque No.',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.receipt),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.receipt,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
               ),
 
@@ -205,8 +351,33 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                 controller: _noteController,
                 decoration: InputDecoration(
                   labelText: 'Note (Optional)',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.note),
+                  labelStyle: TextStyle(
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFF1976D2),
+                    ), // Medium blue when focused
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(
+                      color: Color(0xFFBBDEFB),
+                    ), // Light blue border
+                  ),
+                  filled: true,
+                  fillColor: Colors.white,
+                  prefixIcon: Icon(
+                    Icons.note,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue icon
                 ),
                 maxLines: 2,
               ),
@@ -214,14 +385,33 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
           ),
         ),
       ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Color(0xFFE3F2FD)), // Light blue border
+      ),
+      backgroundColor: Colors.white,
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: Text(
+            'Cancel',
+            style: TextStyle(color: Color(0xFF1976D2)), // Medium blue text
+          ),
         ),
         _isProcessing
-            ? CircularProgressIndicator()
+            ? CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Color(0xFF1976D2),
+                ), // Medium blue progress
+              )
             : ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFF1976D2), // Medium blue background
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
                 onPressed: () async {
                   if (!_formKey.currentState!.validate()) return;
 
@@ -255,7 +445,7 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                             content: Text(
                               'Payment of ${CurrencyHelper.formatAmount(amount, widget.userCurrency)} recorded successfully',
                             ),
-                            backgroundColor: Colors.green,
+                            backgroundColor: Color(0xFF1976D2), // Medium blue
                           ),
                         );
                         Navigator.pop(context, true);
@@ -265,7 +455,9 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Failed to record payment'),
-                            backgroundColor: Colors.red,
+                            backgroundColor: Color(
+                              0xFF1565C0,
+                            ), // Dark blue for error
                           ),
                         );
                       }
@@ -275,7 +467,9 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Error: $e'),
-                          backgroundColor: Colors.red,
+                          backgroundColor: Color(
+                            0xFF1565C0,
+                          ), // Dark blue for error
                         ),
                       );
                     }
@@ -285,7 +479,6 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                     }
                   }
                 },
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
                 child: Text('Record Payment'),
               ),
       ],

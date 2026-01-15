@@ -1,4 +1,4 @@
-// File: lib/screens/reports_screen.dart
+// File: lib/screens/reports_screen.dart - BLUE THEME COLOR FIXES ONLY
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -25,50 +25,103 @@ class _ReportsScreenState extends State<ReportsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF0F8FF), // Light blue background
       appBar: AppBar(
-        title: Text('Reports'),
+        backgroundColor: const Color(0xFF1565C0), // Dark blue
+        foregroundColor: Colors.white,
+        title: const Text('Reports'),
         actions: [
           // Export Button
           PopupMenuButton<String>(
             onSelected: (value) => _handleExportAction(value, context),
+            color: const Color(
+              0xFFF0F8FF,
+            ), // Light blue background for dropdown
+            surfaceTintColor: const Color(
+              0xFFE3F2FD,
+            ), // Material 3 surface tint
+            elevation: 4,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: Color(0xFFBBDEFB), // Light blue border
+                width: 1,
+              ),
+            ),
             itemBuilder: (context) => [
-              PopupMenuItem(
+              PopupMenuItem<String>(
                 value: 'sales',
                 child: Row(
                   children: [
-                    Icon(Icons.picture_as_pdf, color: Colors.red),
+                    Icon(
+                      Icons.picture_as_pdf,
+                      color: Color(0xFF388E3C), // Green
+                    ),
                     SizedBox(width: 8),
-                    Text('Export Sales Report'),
+                    Text(
+                      'Export Sales Report',
+                      style: TextStyle(
+                        color: Color(0xFF0D47A1), // Dark blue text
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              PopupMenuItem(
+              PopupMenuItem<String>(
                 value: 'purchases',
                 child: Row(
                   children: [
-                    Icon(Icons.picture_as_pdf, color: Colors.blue),
+                    Icon(
+                      Icons.picture_as_pdf,
+                      color: Color(0xFF1976D2), // Blue
+                    ),
                     SizedBox(width: 8),
-                    Text('Export Purchases Report'),
+                    Text(
+                      'Export Purchases Report',
+                      style: TextStyle(
+                        color: Color(0xFF0D47A1), // Dark blue text
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              PopupMenuItem(
+              PopupMenuItem<String>(
                 value: 'profit',
                 child: Row(
                   children: [
-                    Icon(Icons.picture_as_pdf, color: Colors.green),
+                    Icon(
+                      Icons.picture_as_pdf,
+                      color: Color(0xFF7B1FA2), // Purple
+                    ),
                     SizedBox(width: 8),
-                    Text('Export Profit & Loss Report'),
+                    Text(
+                      'Export Profit & Loss Report',
+                      style: TextStyle(
+                        color: Color(0xFF0D47A1), // Dark blue text
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
-              PopupMenuItem(
+              PopupMenuItem<String>(
                 value: 'comprehensive',
                 child: Row(
                   children: [
-                    Icon(Icons.picture_as_pdf, color: Colors.purple),
+                    Icon(
+                      Icons.picture_as_pdf,
+                      color: Color(0xFFF57C00), // Orange
+                    ),
                     SizedBox(width: 8),
-                    Text('Export Comprehensive Report'),
+                    Text(
+                      'Export Comprehensive Report',
+                      style: TextStyle(
+                        color: Color(0xFF0D47A1), // Dark blue text
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -77,9 +130,14 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 ? SizedBox(
                     width: 24,
                     height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Colors.white, // White progress indicator
+                      ),
+                    ),
                   )
-                : Icon(Icons.picture_as_pdf),
+                : Icon(Icons.picture_as_pdf, color: Colors.white),
           ),
         ],
       ),
@@ -170,7 +228,6 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  // Add this new method for quick export buttons
   Widget _buildQuickExportButtons(
     BuildContext context,
     ReportsProvider reportsProvider,
@@ -181,30 +238,61 @@ class _ReportsScreenState extends State<ReportsScreen> {
     String userCurrency,
   ) {
     return Card(
+      color: const Color(0xFFE3F2FD),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: const BorderSide(color: Color(0xFFBBDEFB), width: 1),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(12.0), // REDUCED from 16.0 to 12.0
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Simple Header
             Row(
               children: [
-                Icon(Icons.download, color: Colors.blue),
-                SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1976D2).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Icon(
+                    Icons.download,
+                    color: Color(0xFF1976D2),
+                    size: 18,
+                  ),
+                ),
+                const SizedBox(width: 10),
                 Text(
                   'Export Reports',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF1565C0),
+                  ),
                 ),
               ],
             ),
-            SizedBox(height: 15),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
+
+            const SizedBox(height: 10), // REDUCED from 12 to 8
+            // Button Grid
+            GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              childAspectRatio:
+                  3.0, // CHANGED from 2.8 to 3.2 (wider, less tall)
+              crossAxisSpacing: 8,
+              mainAxisSpacing: 8,
               children: [
-                _buildExportButton(
-                  label: 'Sales PDF',
+                // Sales Report Button
+                _buildSimpleExportButton(
+                  title: 'Sales',
+                  subtitle: 'Transactions',
                   icon: Icons.sell,
-                  color: Colors.green,
+                  color: const Color(0xFF388E3C),
                   onTap: () => _exportSalesReport(
                     context,
                     reportsProvider,
@@ -214,10 +302,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     userCurrency,
                   ),
                 ),
-                _buildExportButton(
-                  label: 'Purchases PDF',
+
+                // Purchases Report Button
+                _buildSimpleExportButton(
+                  title: 'Purchases',
+                  subtitle: 'Orders',
                   icon: Icons.shopping_cart,
-                  color: Colors.blue,
+                  color: const Color(0xFF1976D2),
                   onTap: () => _exportPurchasesReport(
                     context,
                     reportsProvider,
@@ -227,11 +318,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     userCurrency,
                   ),
                 ),
-                _buildExportButton(
-                  label: 'Profit & Loss',
-                  icon: Icons.attach_money,
-                  color: Colors.purple,
-                  onTap: () => _exportProfitLossReport(
+                // Full Report Button
+                _buildSimpleExportButton(
+                  title: 'Full Report',
+                  subtitle: 'Complete',
+                  icon: Icons.summarize,
+                  color: const Color(0xFFF57C00),
+                  onTap: () => _exportComprehensiveReport(
                     context,
                     reportsProvider,
                     sellProvider,
@@ -241,11 +334,13 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     userCurrency,
                   ),
                 ),
-                _buildExportButton(
-                  label: 'Full Report',
-                  icon: Icons.assignment,
-                  color: Colors.orange,
-                  onTap: () => _exportComprehensiveReport(
+                // Profit & Loss Button
+                _buildSimpleExportButton(
+                  title: 'Profit/Loss',
+                  subtitle: 'Analysis',
+                  icon: Icons.attach_money,
+                  color: const Color(0xFF7B1FA2),
+                  onTap: () => _exportProfitLossReport(
                     context,
                     reportsProvider,
                     sellProvider,
@@ -263,25 +358,78 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
-  Widget _buildExportButton({
-    required String label,
+  Widget _buildSimpleExportButton({
+    required String title,
+    required String subtitle,
     required IconData icon,
     required Color color,
     required VoidCallback onTap,
   }) {
-    return ElevatedButton.icon(
-      onPressed: onTap,
-      icon: Icon(icon, size: 18),
-      label: Text(label),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: color,
-        foregroundColor: Colors.white,
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: color.withOpacity(0.2), width: 1.5),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 4,
+          ), // REDUCED
+          child: Row(
+            children: [
+              // Smaller icon
+              Container(
+                width: 35, // REDUCED
+                height: 35, // REDUCED
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Center(
+                  child: Icon(icon, color: color, size: 18),
+                ), // Smaller icon
+              ),
+
+              // Title and subtitle after icon
+              const SizedBox(width: 5),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 15, // Slightly smaller text
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF0D47A1),
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 1), // Reduced spacing
+                    Text(
+                      subtitle,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Color.fromARGB(255, 21, 10, 114),
+                      ), // Smaller
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
-
-  // In your ReportsScreen, update the export method to add debugging:
 
   Future<void> _exportSalesReport(
     BuildContext context,
@@ -326,7 +474,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to export: ${e.toString()}'),
-          backgroundColor: Colors.red,
+          backgroundColor: Color(0xFFD32F2F), // Red
         ),
       );
     } finally {
@@ -358,7 +506,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to export purchases report: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: Color(0xFFD32F2F), // Red
         ),
       );
     } finally {
@@ -392,7 +540,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to export profit & loss report: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: Color(0xFFD32F2F), // Red
         ),
       );
     } finally {
@@ -432,7 +580,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Failed to export comprehensive report: $e'),
-          backgroundColor: Colors.red,
+          backgroundColor: Color(0xFFD32F2F), // Red
         ),
       );
     } finally {
@@ -447,16 +595,26 @@ class _ReportsScreenState extends State<ReportsScreen> {
     return showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Report Exported Successfully'),
+        backgroundColor: Colors.white,
+        title: Text(
+          'Report Exported Successfully',
+          style: TextStyle(color: Color(0xFF1565C0)),
+        ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('PDF has been saved to:'),
+            Text(
+              'PDF has been saved to:',
+              style: TextStyle(color: Color(0xFF1976D2)),
+            ),
             SizedBox(height: 8),
             Text(
               filePath.split('/').last,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF0D47A1),
+              ),
             ),
           ],
         ),
@@ -470,6 +628,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
               Navigator.pop(context);
               await PdfExportService.sharePdf(filePath);
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF1976D2), // Blue
+            ),
             child: Text('Share'),
           ),
           ElevatedButton(
@@ -477,7 +638,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
               Navigator.pop(context);
               await PdfExportService.openPdf(filePath);
             },
-            style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF1976D2), // Blue
+            ),
             child: Text('Open'),
           ),
         ],
@@ -557,106 +720,162 @@ class _ReportsScreenState extends State<ReportsScreen> {
     ReportsProvider reportsProvider,
   ) {
     return Card(
+      color: const Color(0xFFE3F2FD), // Light blue background
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: const BorderSide(color: Color(0xFFBBDEFB), width: 1),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Date Range Selector - FIXED LAYOUT
+            // Date Range Section - Compact Design
             Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.calendar_today, size: 20, color: Colors.blue),
-                SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1976D2).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Icon(
+                    Icons.calendar_today,
+                    color: Color(0xFF1976D2),
+                    size: 18,
+                  ),
+                ),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Date Range:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        'Date Range',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF1565C0),
+                        ),
                       ),
-                      SizedBox(height: 4),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextButton(
-                              onPressed: () =>
-                                  _selectDateRange(context, reportsProvider),
-                              style: TextButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                alignment: Alignment.centerLeft,
-                              ),
-                              child: Text(
-                                reportsProvider.selectedDateRange == null
-                                    ? 'All Dates'
-                                    : '${_dateFormat.format(reportsProvider.selectedDateRange!.start)} - ${_dateFormat.format(reportsProvider.selectedDateRange!.end)}',
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontSize: 14,
-                                ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          if (reportsProvider.selectedDateRange != null)
-                            IconButton(
-                              icon: Icon(Icons.clear, size: 18),
-                              onPressed: () {
-                                // ignore: null_check_always_fails
-                                reportsProvider.setDateRange(null!);
-                              },
-                              padding: EdgeInsets.zero,
-                              constraints: BoxConstraints(),
-                            ),
-                        ],
+                      const SizedBox(height: 2),
+                      Text(
+                        reportsProvider.selectedDateRange == null
+                            ? 'All Dates'
+                            : '${_dateFormat.format(reportsProvider.selectedDateRange!.start)} - ${_dateFormat.format(reportsProvider.selectedDateRange!.end)}',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF0D47A1),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                  onPressed: () => _selectDateRange(context, reportsProvider),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF1976D2),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 8,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    minimumSize: Size(0, 0),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.edit, size: 14),
+                      SizedBox(width: 4),
+                      Text('Select', style: TextStyle(fontSize: 12)),
                     ],
                   ),
                 ),
               ],
             ),
 
-            SizedBox(height: 15),
+            const SizedBox(height: 16),
 
-            // Type Filter - FIXED LAYOUT
+            // Status Filter Section - Compact Design
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.filter_list, size: 20, color: Colors.blue),
-                SizedBox(width: 8),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1976D2).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: const Icon(
+                    Icons.filter_list,
+                    color: Color(0xFF1976D2),
+                    size: 18,
+                  ),
+                ),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Filter by:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        'Order Status',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFF1565C0),
+                        ),
                       ),
-                      SizedBox(height: 8),
-                      Wrap(
-                        spacing: 8,
-                        runSpacing: 8,
+                      const SizedBox(height: 8),
+
+                      // Equal Size Filter Buttons
+                      Row(
                         children: [
-                          FilterChip(
-                            label: Text('All'),
-                            selected: reportsProvider.selectedFilter == 'all',
-                            onSelected: (_) => reportsProvider.setFilter('all'),
+                          // All Button
+                          Expanded(
+                            child: _buildStatusFilterButton(
+                              isSelected:
+                                  reportsProvider.selectedFilter == 'all',
+                              label: 'All',
+                              icon: Icons.all_inclusive,
+                              color: const Color(0xFF1976D2),
+                              onTap: () => reportsProvider.setFilter('all'),
+                            ),
                           ),
-                          FilterChip(
-                            label: Text('Completed'),
-                            selected:
-                                reportsProvider.selectedFilter == 'completed',
-                            onSelected: (_) =>
-                                reportsProvider.setFilter('completed'),
+                          const SizedBox(width: 8),
+
+                          // Completed Button
+                          Expanded(
+                            child: _buildStatusFilterButton(
+                              isSelected:
+                                  reportsProvider.selectedFilter == 'completed',
+                              label: 'Completed',
+                              icon: Icons.check_circle,
+                              color: const Color(0xFF388E3C),
+                              onTap: () =>
+                                  reportsProvider.setFilter('completed'),
+                            ),
                           ),
-                          FilterChip(
-                            label: Text('Pending'),
-                            selected:
-                                reportsProvider.selectedFilter == 'pending',
-                            onSelected: (_) =>
-                                reportsProvider.setFilter('pending'),
+                          const SizedBox(width: 8),
+
+                          // Pending Button
+                          Expanded(
+                            child: _buildStatusFilterButton(
+                              isSelected:
+                                  reportsProvider.selectedFilter == 'pending',
+                              label: 'Pending',
+                              icon: Icons.pending,
+                              color: const Color(0xFFF57C00),
+                              onTap: () => reportsProvider.setFilter('pending'),
+                            ),
                           ),
                         ],
                       ),
@@ -671,14 +890,55 @@ class _ReportsScreenState extends State<ReportsScreen> {
     );
   }
 
+  // Helper method to create consistent filter buttons
+  Widget _buildStatusFilterButton({
+    required bool isSelected,
+    required String label,
+    required IconData icon,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(6),
+      child: Container(
+        height: 36, // Fixed height for all buttons
+        decoration: BoxDecoration(
+          color: isSelected ? color : color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: isSelected ? color : color.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 14, color: isSelected ? Colors.white : color),
+            const SizedBox(width: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: isSelected ? Colors.white : color,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildSummaryCards(Map<String, double> totals, String userCurrency) {
     return GridView.count(
       crossAxisCount: 2,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      childAspectRatio: 1.2,
-      crossAxisSpacing: 10,
-      mainAxisSpacing: 10,
+      childAspectRatio: 1.25,
+      crossAxisSpacing: 5,
+      mainAxisSpacing: 5,
       children: [
         SummaryCard(
           title: 'Total Sales',
@@ -687,7 +947,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             userCurrency,
           ),
           icon: Icons.trending_up,
-          color: Colors.green,
+          color: Color(0xFF388E3C), // Green
         ),
         SummaryCard(
           title: 'Total Purchases',
@@ -696,7 +956,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             userCurrency,
           ),
           icon: Icons.trending_down,
-          color: Colors.orange,
+          color: Color(0xFF1976D2), // Blue
         ),
         SummaryCard(
           title: 'Gross Profit',
@@ -705,7 +965,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
             userCurrency,
           ),
           icon: Icons.account_balance_wallet,
-          color: totals['profit']! >= 0 ? Colors.blue : Colors.red,
+          color: totals['profit']! >= 0
+              ? Color(0xFF388E3C) // Green for profit
+              : Color(0xFFD32F2F), // Red for loss
         ),
         SummaryCard(
           title: 'Profit Margin',
@@ -713,7 +975,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
               ? '${((totals['profit']! / totals['sales']!) * 100).toStringAsFixed(1)}%'
               : '0%',
           icon: Icons.percent,
-          color: Colors.purple,
+          color: Color(0xFF7B1FA2), // Purple
         ),
       ],
     );
@@ -726,6 +988,12 @@ class _ReportsScreenState extends State<ReportsScreen> {
     required String userCurrency,
   }) {
     return Card(
+      color: Color(0xFFE3F2FD), // Light blue background
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Color(0xFFBBDEFB), width: 1),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -735,17 +1003,35 @@ class _ReportsScreenState extends State<ReportsScreen> {
               children: [
                 Icon(
                   type == 'sell' ? Icons.sell : Icons.shopping_cart,
-                  color: Colors.blue,
+                  color: type == 'sell'
+                      ? Color(0xFF388E3C) // Green for sales
+                      : Color(0xFF1976D2), // Blue for purchases
                 ),
                 SizedBox(width: 10),
                 Text(
                   title,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF1565C0),
+                  ),
                 ),
                 Spacer(),
-                Chip(
-                  label: Text('${orders.length} transactions'),
-                  backgroundColor: Colors.blue[50],
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Color(0xFF1976D2).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Color(0xFF1976D2), width: 1),
+                  ),
+                  child: Text(
+                    '${orders.length} transactions',
+                    style: TextStyle(
+                      color: Color(0xFF1976D2),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -800,9 +1086,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
       margin: EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
+        color: Color(0xFFF0F8FF), // Very light blue
         borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(color: Color(0xFFBBDEFB)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -812,13 +1098,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
             margin: EdgeInsets.only(right: 12),
             child: CircleAvatar(
               backgroundColor: order.isCompleted
-                  ? Colors.green[100]
-                  : Colors.orange[100],
+                  ? Color(0xFFE8F5E9) // Light green
+                  : Color(0xFFFFF3E0), // Light orange
               radius: 18,
               child: Icon(
                 isSell ? Icons.sell : Icons.shopping_cart,
                 size: 16,
-                color: order.isCompleted ? Colors.green : Colors.orange,
+                color: order.isCompleted
+                    ? Color(0xFF388E3C) // Green
+                    : Color(0xFFF57C00), // Orange
               ),
             ),
           ),
@@ -831,7 +1119,11 @@ class _ReportsScreenState extends State<ReportsScreen> {
                 // Name
                 Text(
                   name,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                    color: Color(0xFF0D47A1),
+                  ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -844,7 +1136,9 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: order.isCompleted ? Colors.green : Colors.orange,
+                        color: order.isCompleted
+                            ? Color(0xFF388E3C) // Green
+                            : Color(0xFFF57C00), // Orange
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
@@ -855,7 +1149,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
                     SizedBox(width: 8),
                     Text(
                       date,
-                      style: TextStyle(fontSize: 11, color: Colors.grey[600]),
+                      style: TextStyle(fontSize: 11, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -874,13 +1168,15 @@ class _ReportsScreenState extends State<ReportsScreen> {
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
-                    color: isSell ? Colors.green[800] : Colors.orange[800],
+                    color: isSell
+                        ? Color(0xFF388E3C) // Green for sales
+                        : Color(0xFF1976D2), // Blue for purchases
                   ),
                 ),
                 SizedBox(height: 2),
                 Text(
                   isSell ? 'Sale' : 'Purchase',
-                  style: TextStyle(fontSize: 10, color: Colors.grey[600]),
+                  style: TextStyle(fontSize: 10, color: Colors.grey),
                 ),
               ],
             ),
@@ -931,6 +1227,11 @@ class SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
+      color: Color(0xFFE3F2FD), // Light blue background
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Color(0xFFBBDEFB), width: 1),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -959,7 +1260,7 @@ class SummaryCard extends StatelessWidget {
             SizedBox(height: 5),
             Text(
               title,
-              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 12, color: Color(0xFF1976D2)),
               textAlign: TextAlign.center,
             ),
           ],

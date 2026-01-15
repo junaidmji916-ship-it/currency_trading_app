@@ -1,4 +1,4 @@
-// File: lib/models/buy_order_model.dart - UPDATED
+// File: lib/models/buy_order_model.dart - FIXED
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BuyOrder {
@@ -12,13 +12,14 @@ class BuyOrder {
   double quantity;
   double rate;
   double totalAmount;
-  String status; // 'pending' or 'completed'
+  String status;
   bool paid;
+  double paidAmount;
+  double pendingPaymentAmount;
+  DateTime? paymentDate;
 
-  // PARTIAL PAYMENT SUPPORT - ADD THESE FIELDS
-  double paidAmount; // Track partial payment amount
-  double pendingPaymentAmount; // Calculate pending amount
-  DateTime? paymentDate; // Track when payment was made
+  // CHANGE THIS: Add paymentHistory field
+  List<Map<String, dynamic>> paymentHistory;
 
   DateTime createdAt;
   String createdBy;
@@ -38,6 +39,7 @@ class BuyOrder {
     required this.paid,
     this.paidAmount = 0.0,
     this.paymentDate,
+    this.paymentHistory = const [], // Initialize as empty list
     required this.createdAt,
     required this.createdBy,
   }) : pendingPaymentAmount = totalAmount - paidAmount;
@@ -45,8 +47,20 @@ class BuyOrder {
   factory BuyOrder.fromFirestore(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    // Extract partial payment data (with defaults)
     double paidAmount = (data['paidAmount'] as num?)?.toDouble() ?? 0.0;
+
+    // REMOVE THIS: get paymentHistory => null;
+    // AND ADD: Initialize paymentHistory from data if exists
+    List<Map<String, dynamic>> paymentHistory = [];
+    if (data['paymentHistory'] != null && data['paymentHistory'] is List) {
+      try {
+        paymentHistory = List<Map<String, dynamic>>.from(
+          data['paymentHistory'],
+        );
+      } catch (e) {
+        paymentHistory = [];
+      }
+    }
 
     return BuyOrder(
       id: doc.id,
@@ -65,6 +79,7 @@ class BuyOrder {
       paymentDate: data['paymentDate'] != null
           ? (data['paymentDate'] as Timestamp).toDate()
           : null,
+      paymentHistory: paymentHistory, // Add this
       createdAt: (data['createdAt'] as Timestamp).toDate(),
       createdBy: data['createdBy'] ?? '',
     );
@@ -84,11 +99,11 @@ class BuyOrder {
       'status': status,
       'paid': paid,
       'paidAmount': paidAmount,
+      'paymentHistory': paymentHistory, // Add this
       'createdAt': FieldValue.serverTimestamp(),
       'createdBy': createdBy,
     };
 
-    // Add payment date if it exists
     if (paymentDate != null) {
       data['paymentDate'] = Timestamp.fromDate(paymentDate!);
     }
@@ -96,16 +111,14 @@ class BuyOrder {
     return data;
   }
 
-  // Helper methods
+  // Helper methods - KEEP THESE
   bool get isCompleted => status == 'completed';
   bool get isPending => status == 'pending';
-
-  // Check if fully paid
   bool get isFullyPaid => paidAmount >= totalAmount;
-
-  // Get payment percentage
   double get paymentPercentage =>
       totalAmount > 0 ? (paidAmount / totalAmount) * 100 : 0;
+
+  // REMOVE THIS: get paymentHistory => null;
 
   BuyOrder copyWith({
     String? id,
@@ -122,6 +135,7 @@ class BuyOrder {
     bool? paid,
     double? paidAmount,
     DateTime? paymentDate,
+    List<Map<String, dynamic>>? paymentHistory, // Add this
     DateTime? createdAt,
     String? createdBy,
   }) {
@@ -140,6 +154,7 @@ class BuyOrder {
       paid: paid ?? this.paid,
       paidAmount: paidAmount ?? this.paidAmount,
       paymentDate: paymentDate ?? this.paymentDate,
+      paymentHistory: paymentHistory ?? this.paymentHistory, // Add this
       createdAt: createdAt ?? this.createdAt,
       createdBy: createdBy ?? this.createdBy,
     );

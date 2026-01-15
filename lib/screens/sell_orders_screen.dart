@@ -1,4 +1,4 @@
-// File: lib/screens/sell_orders_screen.dart
+// File: lib/screens/sell_orders_screen.dart - BLUE THEME COLOR FIXES ONLY
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/sell_order_provider.dart';
@@ -20,16 +20,19 @@ class _SellOrdersScreenState extends State<SellOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF0F8FF), // Light blue background
       appBar: AppBar(
-        title: Text('Sell Orders'),
+        backgroundColor: const Color(0xFF1565C0), // Dark blue
+        foregroundColor: Colors.white,
+        title: const Text('Sell Orders'),
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => CreateSellOrderScreen(),
+                  builder: (context) => const CreateSellOrderScreen(),
                 ),
               );
             },
@@ -42,7 +45,11 @@ class _SellOrdersScreenState extends State<SellOrdersScreen> {
               authProvider.userData?['transactionCurrency'] ?? 'USD';
 
           if (sellOrderProvider.isLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF1565C0)),
+              ),
+            );
           }
 
           if (sellOrderProvider.sellOrders.isEmpty) {
@@ -50,13 +57,13 @@ class _SellOrdersScreenState extends State<SellOrdersScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.sell, size: 80, color: Colors.grey),
-                  SizedBox(height: 20),
+                  Icon(Icons.sell, size: 80, color: Colors.grey[400]),
+                  const SizedBox(height: 20),
                   Text(
                     'No sell orders yet',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                    style: TextStyle(fontSize: 18, color: Colors.grey[600]),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Tap + to create your first sell order',
                     style: TextStyle(color: Colors.grey[600]),
@@ -67,7 +74,7 @@ class _SellOrdersScreenState extends State<SellOrdersScreen> {
           }
 
           return ListView.builder(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             itemCount: sellOrderProvider.sellOrders.length,
             itemBuilder: (context, index) {
               SellOrder order = sellOrderProvider.sellOrders[index];
@@ -84,9 +91,6 @@ class _SellOrdersScreenState extends State<SellOrdersScreen> {
     );
   }
 }
-
-// File: lib/screens/sell_orders_screen.dart - UPDATED SellOrderCard widget
-// Replace the existing SellOrderCard with this updated version:
 
 class SellOrderCard extends StatefulWidget {
   final SellOrder order;
@@ -122,7 +126,16 @@ class _SellOrderCardState extends State<SellOrderCard> {
     final reciprocalRate = CurrencyHelper.getReciprocalRate(order.rate);
 
     return Card(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: const EdgeInsets.only(bottom: 10),
+      color: const Color(0xFFE3F2FD), // Light blue background
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: const BorderSide(
+          color: Color(0xFFBBDEFB), // Light blue border
+          width: 1,
+        ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
@@ -140,21 +153,24 @@ class _SellOrderCardState extends State<SellOrderCard> {
                     color: order.isCompleted ? Colors.green : Colors.orange,
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         order.customerName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: Color(0xFF1565C0), // Dark blue text
                         ),
                       ),
                       Text(
                         '${order.productName} (${order.productCode})',
-                        style: TextStyle(color: Colors.grey[600]),
+                        style: const TextStyle(
+                          color: Color(0xFF1976D2), // Medium blue text
+                        ),
                       ),
                     ],
                   ),
@@ -162,16 +178,25 @@ class _SellOrderCardState extends State<SellOrderCard> {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Chip(
-                      label: Text(
-                        order.isCompleted ? 'Completed' : 'Pending',
-                        style: TextStyle(color: Colors.white, fontSize: 12),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
                       ),
-                      backgroundColor: order.isCompleted
-                          ? Colors.green
-                          : Colors.orange,
+                      decoration: BoxDecoration(
+                        color: order.isCompleted ? Colors.green : Colors.orange,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        order.isCompleted ? 'Completed' : 'Pending',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     PopupMenuButton<String>(
                       onSelected: (value) async {
                         if (value == 'edit') {
@@ -191,8 +216,8 @@ class _SellOrderCardState extends State<SellOrderCard> {
                         }
                       },
                       itemBuilder: (context) => [
-                        PopupMenuItem(value: 'edit', child: Text('Edit')),
-                        PopupMenuItem(
+                        const PopupMenuItem(value: 'edit', child: Text('Edit')),
+                        const PopupMenuItem(
                           value: 'delete',
                           child: Text(
                             'Delete',
@@ -200,7 +225,11 @@ class _SellOrderCardState extends State<SellOrderCard> {
                           ),
                         ),
                       ],
-                      icon: Icon(Icons.more_vert, size: 20),
+                      icon: const Icon(
+                        Icons.more_vert,
+                        size: 20,
+                        color: Color(0xFF1565C0),
+                      ),
                       padding: EdgeInsets.zero,
                     ),
                   ],
@@ -208,7 +237,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
               ],
             ),
 
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
 
             // Order details with conversion rate
             Row(
@@ -237,7 +266,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
               ],
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -258,14 +287,14 @@ class _SellOrderCardState extends State<SellOrderCard> {
                       _showReciprocalRate
                           ? '1 $productCurrency = ${order.rate.toStringAsFixed(4)} $userCurrency'
                           : '1 $userCurrency = ${reciprocalRate.toStringAsFixed(2)} $productCurrency',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 11,
-                        color: Colors.blue,
+                        color: Color(0xFF1976D2), // Medium blue
                         fontStyle: FontStyle.italic,
                       ),
                     ),
-                    SizedBox(height: 2),
-                    Text(
+                    const SizedBox(height: 2),
+                    const Text(
                       'Tap rate to toggle',
                       style: TextStyle(fontSize: 9, color: Colors.grey),
                     ),
@@ -274,7 +303,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
               ],
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
             // Payment Progress
             Column(
@@ -289,18 +318,23 @@ class _SellOrderCardState extends State<SellOrderCard> {
                     ),
                     Text(
                       '${order.paymentReceivedAmount.toStringAsFixed(2)} / ${order.totalAmount.toStringAsFixed(2)} $userCurrency',
-                      style: TextStyle(fontSize: 12),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF0D47A1),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 LinearProgressIndicator(
                   value: order.paymentPercentage / 100,
                   backgroundColor: Colors.grey[300],
-                  color: order.isFullyPaid ? Colors.green : Colors.orange,
+                  color: order.isFullyPaid
+                      ? const Color(0xFF388E3C)
+                      : const Color(0xFF1976D2),
                   minHeight: 6,
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -318,14 +352,17 @@ class _SellOrderCardState extends State<SellOrderCard> {
                         children: [
                           Text(
                             _showPaymentDetails ? 'Hide' : 'Details',
-                            style: TextStyle(fontSize: 10, color: Colors.blue),
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Color(0xFF1976D2),
+                            ), // Medium blue
                           ),
                           Icon(
                             _showPaymentDetails
                                 ? Icons.expand_less
                                 : Icons.expand_more,
                             size: 12,
-                            color: Colors.blue,
+                            color: const Color(0xFF1976D2), // Medium blue
                           ),
                         ],
                       ),
@@ -338,42 +375,59 @@ class _SellOrderCardState extends State<SellOrderCard> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.grey[50],
+                        color: const Color(0xFFF0F8FF),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: const Color(0xFFBBDEFB),
+                          width: 1,
+                        ),
                       ),
                       child: Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Paid:', style: TextStyle(fontSize: 12)),
+                              const Text(
+                                'Paid:',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF1976D2),
+                                ),
+                              ),
                               Text(
                                 CurrencyHelper.formatAmount(
                                   order.paymentReceivedAmount,
                                   userCurrency,
                                 ),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
+                                  color: Color(0xFF388E3C),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Pending:', style: TextStyle(fontSize: 12)),
+                              const Text(
+                                'Pending:',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF1976D2),
+                                ),
+                              ),
                               Text(
                                 CurrencyHelper.formatAmount(
                                   order.pendingPaymentAmount,
                                   userCurrency,
                                 ),
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
-                                  color: Colors.orange,
+                                  color: Color(0xFFF57C00),
                                 ),
                               ),
                             ],
@@ -383,7 +437,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
                                 'Last payment: ${_formatDateTime(order.paymentReceivedDate!)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey,
                                 ),
@@ -407,11 +461,19 @@ class _SellOrderCardState extends State<SellOrderCard> {
                                           ),
                                     );
                                   },
-                                  icon: Icon(Icons.history, size: 16),
-                                  label: Text('View Payment History'),
+                                  icon: const Icon(
+                                    Icons.history,
+                                    size: 16,
+                                    color: Color(0xFF1976D2),
+                                  ),
+                                  label: const Text(
+                                    'View Payment History',
+                                    style: TextStyle(color: Color(0xFF1976D2)),
+                                  ),
                                   style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.purple,
-                                    side: BorderSide(color: Colors.purple),
+                                    side: const BorderSide(
+                                      color: Color(0xFF1976D2),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -423,7 +485,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
               ],
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
             // Delivery Progress
             Column(
@@ -438,18 +500,23 @@ class _SellOrderCardState extends State<SellOrderCard> {
                     ),
                     Text(
                       '${order.deliveredQuantity.toStringAsFixed(2)} / ${order.quantity.toStringAsFixed(2)} $productCurrency',
-                      style: TextStyle(fontSize: 12),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF0D47A1),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 LinearProgressIndicator(
                   value: order.deliveryPercentage / 100,
                   backgroundColor: Colors.grey[300],
-                  color: order.isFullyDelivered ? Colors.blue : Colors.orange,
+                  color: order.isFullyDelivered
+                      ? const Color(0xFF1976D2)
+                      : const Color(0xFFF57C00),
                   minHeight: 6,
                 ),
-                SizedBox(height: 2),
+                const SizedBox(height: 2),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -467,14 +534,17 @@ class _SellOrderCardState extends State<SellOrderCard> {
                         children: [
                           Text(
                             _showDeliveryDetails ? 'Hide' : 'Details',
-                            style: TextStyle(fontSize: 10, color: Colors.blue),
+                            style: const TextStyle(
+                              fontSize: 10,
+                              color: Color(0xFF1976D2),
+                            ), // Medium blue
                           ),
                           Icon(
                             _showDeliveryDetails
                                 ? Icons.expand_less
                                 : Icons.expand_more,
                             size: 12,
-                            color: Colors.blue,
+                            color: const Color(0xFF1976D2), // Medium blue
                           ),
                         ],
                       ),
@@ -487,39 +557,53 @@ class _SellOrderCardState extends State<SellOrderCard> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.grey[50],
+                        color: const Color(0xFFF0F8FF),
                         borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: const Color(0xFFBBDEFB),
+                          width: 1,
+                        ),
                       ),
                       child: Column(
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
+                              const Text(
                                 'Delivered:',
-                                style: TextStyle(fontSize: 12),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFF1976D2),
+                                ),
                               ),
                               Text(
                                 '${order.deliveredQuantity.toStringAsFixed(2)} $productCurrency',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.bold,
+                                  color: Color(0xFF1976D2),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Pending:', style: TextStyle(fontSize: 12)),
-                              Text(
-                                '${order.pendingDeliveryQuantity.toStringAsFixed(2)} $productCurrency',
+                              const Text(
+                                'Pending:',
                                 style: TextStyle(
                                   fontSize: 12,
-                                  color: Colors.orange,
+                                  color: Color(0xFF1976D2),
+                                ),
+                              ),
+                              Text(
+                                '${order.pendingDeliveryQuantity.toStringAsFixed(2)} $productCurrency',
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Color(0xFFF57C00),
                                 ),
                               ),
                             ],
@@ -529,7 +613,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
                                 'Last delivery: ${_formatDateTime(order.deliveredDate!)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 10,
                                   color: Colors.grey,
                                 ),
@@ -550,11 +634,19 @@ class _SellOrderCardState extends State<SellOrderCard> {
                                           DeliveryHistoryDialog(order: order),
                                     );
                                   },
-                                  icon: Icon(Icons.history, size: 16),
-                                  label: Text('View Delivery History'),
+                                  icon: const Icon(
+                                    Icons.history,
+                                    size: 16,
+                                    color: Color(0xFF1976D2),
+                                  ),
+                                  label: const Text(
+                                    'View Delivery History',
+                                    style: TextStyle(color: Color(0xFF1976D2)),
+                                  ),
                                   style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.blue,
-                                    side: BorderSide(color: Colors.blue),
+                                    side: const BorderSide(
+                                      color: Color(0xFF1976D2),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -566,12 +658,18 @@ class _SellOrderCardState extends State<SellOrderCard> {
               ],
             ),
 
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
 
             // Action buttons - UPDATED FOR PARTIAL FUNCTIONALITY
             if (!order.isCompleted)
               _isProcessing
-                  ? Center(child: CircularProgressIndicator())
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          Color(0xFF1565C0),
+                        ),
+                      ),
+                    )
                   : Column(
                       children: [
                         // Partial Payment Button
@@ -586,7 +684,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                                       order,
                                     );
                                   },
-                            icon: Icon(Icons.payment, size: 18),
+                            icon: const Icon(Icons.payment, size: 18),
                             label: Text(
                               order.isFullyPaid
                                   ? 'Fully Paid'
@@ -597,7 +695,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: order.isFullyPaid
                                   ? Colors.grey[300]
-                                  : Colors.green,
+                                  : const Color(0xFF388E3C),
                               foregroundColor: order.isFullyPaid
                                   ? Colors.grey[600]
                                   : Colors.white,
@@ -605,7 +703,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                           ),
                         ),
 
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
 
                         // Partial Delivery Button
                         SizedBox(
@@ -619,7 +717,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                                       order,
                                     );
                                   },
-                            icon: Icon(Icons.local_shipping, size: 18),
+                            icon: const Icon(Icons.local_shipping, size: 18),
                             label: Text(
                               order.isFullyDelivered
                                   ? 'Fully Delivered'
@@ -630,7 +728,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: order.isFullyDelivered
                                   ? Colors.grey[300]
-                                  : Colors.blue,
+                                  : const Color(0xFF1976D2),
                               foregroundColor: order.isFullyDelivered
                                   ? Colors.grey[600]
                                   : Colors.white,
@@ -638,7 +736,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                           ),
                         ),
 
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
 
                         // Undo buttons (only show if there's something to undo)
                         if (order.paymentReceivedAmount > 0 ||
@@ -653,20 +751,22 @@ class _SellOrderCardState extends State<SellOrderCard> {
                                       order,
                                       sellOrderProvider,
                                     ),
-                                    icon: Icon(Icons.undo, size: 16),
-                                    label: Text(
+                                    icon: const Icon(Icons.undo, size: 16),
+                                    label: const Text(
                                       'Undo Payment',
                                       style: TextStyle(fontSize: 12),
                                     ),
                                     style: OutlinedButton.styleFrom(
-                                      foregroundColor: Colors.orange,
-                                      side: BorderSide(color: Colors.orange),
+                                      foregroundColor: const Color(0xFFF57C00),
+                                      side: const BorderSide(
+                                        color: Color(0xFFF57C00),
+                                      ),
                                     ),
                                   ),
                                 ),
                               if (order.paymentReceivedAmount > 0 &&
                                   order.deliveredQuantity > 0)
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                               if (order.deliveredQuantity > 0)
                                 Expanded(
                                   child: OutlinedButton.icon(
@@ -675,14 +775,16 @@ class _SellOrderCardState extends State<SellOrderCard> {
                                       order,
                                       sellOrderProvider,
                                     ),
-                                    icon: Icon(Icons.undo, size: 16),
-                                    label: Text(
+                                    icon: const Icon(Icons.undo, size: 16),
+                                    label: const Text(
                                       'Undo Delivery',
                                       style: TextStyle(fontSize: 12),
                                     ),
                                     style: OutlinedButton.styleFrom(
-                                      foregroundColor: Colors.orange,
-                                      side: BorderSide(color: Colors.orange),
+                                      foregroundColor: const Color(0xFFF57C00),
+                                      side: const BorderSide(
+                                        color: Color(0xFFF57C00),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -765,17 +867,17 @@ class _SellOrderCardState extends State<SellOrderCard> {
                   ? '${CurrencyHelper.formatAmount(confirmed, widget.userCurrency)} payment undone'
                   : 'All payment undone',
             ),
-            backgroundColor: Colors.orange,
-            duration: Duration(seconds: 2),
+            backgroundColor: const Color(0xFFF57C00),
+            duration: const Duration(seconds: 2),
           ),
         );
         setState(() {}); // Refresh UI
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to undo payment'),
+            content: const Text('Failed to undo payment'),
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -785,7 +887,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
           SnackBar(
             content: Text('Error: ${e.toString()}'),
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -836,17 +938,17 @@ class _SellOrderCardState extends State<SellOrderCard> {
                   ? '${confirmed.toStringAsFixed(2)} ${order.productCode} delivery undone'
                   : 'All delivery undone',
             ),
-            backgroundColor: Colors.orange,
-            duration: Duration(seconds: 2),
+            backgroundColor: const Color(0xFFF57C00),
+            duration: const Duration(seconds: 2),
           ),
         );
         setState(() {}); // Refresh UI
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to undo delivery'),
+            content: const Text('Failed to undo delivery'),
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 2),
+            duration: const Duration(seconds: 2),
           ),
         );
       }
@@ -856,7 +958,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
           SnackBar(
             content: Text('Error: ${e.toString()}'),
             backgroundColor: Colors.red,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
       }
@@ -882,11 +984,14 @@ class _SellOrderCardState extends State<SellOrderCard> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: Text('Undo All', style: TextStyle(color: Colors.orange)),
+              child: const Text(
+                'Undo All',
+                style: TextStyle(color: Colors.orange),
+              ),
             ),
           ],
         ),
@@ -910,16 +1015,16 @@ class _SellOrderCardState extends State<SellOrderCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(message),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       if (allowPartial)
                         TextFormField(
                           controller: amountController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'Amount to undo (optional)',
                             hintText: 'Leave empty to undo all',
                             border: OutlineInputBorder(),
                           ),
-                          keyboardType: TextInputType.numberWithOptions(
+                          keyboardType: const TextInputType.numberWithOptions(
                             decimal: true,
                           ),
                         ),
@@ -929,7 +1034,7 @@ class _SellOrderCardState extends State<SellOrderCard> {
                 actions: [
                   TextButton(
                     onPressed: () => Navigator.pop(context, null),
-                    child: Text('Cancel'),
+                    child: const Text('Cancel'),
                   ),
                   if (allowPartial && amountController.text.isNotEmpty)
                     TextButton(
@@ -939,14 +1044,14 @@ class _SellOrderCardState extends State<SellOrderCard> {
                           Navigator.pop(context, amount);
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         'Undo Partial',
                         style: TextStyle(color: Colors.orange),
                       ),
                     ),
                   TextButton(
                     onPressed: () => Navigator.pop(context, true),
-                    child: Text(
+                    child: const Text(
                       'Undo All',
                       style: TextStyle(color: Colors.orange),
                     ),
@@ -968,16 +1073,16 @@ class _SellOrderCardState extends State<SellOrderCard> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Delete Sell Order'),
-        content: Text('Are you sure you want to delete this sell order?'),
+        title: const Text('Delete Sell Order'),
+        content: const Text('Are you sure you want to delete this sell order?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context, false),
-            child: Text('Cancel'),
+            child: const Text('Cancel'),
           ),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Delete', style: TextStyle(color: Colors.red)),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),
@@ -1069,118 +1174,262 @@ class _PaymentHistoryDialogState extends State<PaymentHistoryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Row(
-        children: [
-          Icon(Icons.history, color: Colors.purple),
-          SizedBox(width: 10),
-          Text('Payment History'),
-        ],
-      ),
-      content: Container(
-        width: double.maxFinite,
-        child: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : _paymentHistory.isEmpty
-            ? Center(child: Text('No payment history found'))
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total Payments:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        CurrencyHelper.formatAmount(
-                          widget.order.paymentReceivedAmount,
-                          widget.userCurrency,
+    return Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Payment History',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1565C0),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Color(0xFF1565C0)),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Order Info Card - BLUE THEME
+            Card(
+              color: const Color(0xFFE3F2FD),
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: const BorderSide(color: Color(0xFFBBDEFB), width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.order.customerName,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1565C0),
+                          ),
                         ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Total: ${CurrencyHelper.formatAmount(widget.order.totalAmount, widget.userCurrency)}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF1976D2),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: widget.order.isFullyPaid
+                            ? const Color(0xFFE8F5E9)
+                            : const Color(0xFFFFF3E0),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: widget.order.isFullyPaid
+                              ? const Color(0xFFC8E6C9)
+                              : const Color(0xFFFFE0B2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        widget.order.isFullyPaid
+                            ? 'Fully Paid'
+                            : 'Partially Paid',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: widget.order.isFullyPaid
+                              ? const Color(0xFF388E3C)
+                              : const Color(0xFFF57C00),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(0xFF1565C0),
+                      ),
+                    ),
+                  )
+                : _paymentHistory.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.history,
+                            size: 48,
+                            color: Colors.grey[400],
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'No payment history found',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Total Payments:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            CurrencyHelper.formatAmount(
+                              widget.order.paymentReceivedAmount,
+                              widget.userCurrency,
+                            ),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF388E3C),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          itemCount: _paymentHistory.length,
+                          itemBuilder: (context, index) {
+                            final payment = _paymentHistory[index];
+                            return Card(
+                              margin: const EdgeInsets.only(bottom: 8),
+                              color: const Color(0xFFF0F8FF),
+                              elevation: 1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: const BorderSide(
+                                  color: Color(0xFFBBDEFB),
+                                  width: 1,
+                                ),
+                              ),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: const Color(0xFFE8F5E9),
+                                  child: Icon(
+                                    Icons.payment,
+                                    size: 20,
+                                    color: const Color(0xFF388E3C),
+                                  ),
+                                ),
+                                title: Text(
+                                  CurrencyHelper.formatAmount(
+                                    (payment['amount'] as num).toDouble(),
+                                    widget.userCurrency,
+                                  ),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF388E3C),
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Method: ${payment['paymentMethod'] ?? 'Not specified'}',
+                                      style: const TextStyle(
+                                        color: Color(0xFF1976D2),
+                                      ),
+                                    ),
+                                    if (payment['referenceNumber'] != null)
+                                      Text(
+                                        'Ref: ${payment['referenceNumber']}',
+                                      ),
+                                    if (payment['note'] != null)
+                                      Text(
+                                        'Note: ${payment['note']}',
+                                        style: const TextStyle(
+                                          color: Color(0xFF1976D2),
+                                        ),
+                                      ),
+                                    Text(
+                                      'Date: ${_formatDate((payment['date'] as Timestamp).toDate())}',
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    size: 18,
+                                    color: Color(0xFF1976D2),
+                                  ),
+                                  onPressed: () async {
+                                    final result = await showDialog(
+                                      context: context,
+                                      builder: (context) => EditPaymentDialog(
+                                        order: widget.order,
+                                        userCurrency: widget.userCurrency,
+                                        paymentTransaction: payment,
+                                      ),
+                                    );
+
+                                    if (result != null && mounted) {
+                                      await _loadPaymentHistory();
+                                    }
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
-                  Container(
-                    height: 200,
-                    child: ListView.builder(
-                      itemCount: _paymentHistory.length,
-                      itemBuilder: (context, index) {
-                        final payment = _paymentHistory[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.green[100],
-                            child: Icon(
-                              Icons.payment,
-                              size: 20,
-                              color: Colors.green,
-                            ),
-                          ),
-                          title: Text(
-                            CurrencyHelper.formatAmount(
-                              (payment['amount'] as num).toDouble(),
-                              widget.userCurrency,
-                            ),
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Method: ${payment['paymentMethod'] ?? 'Not specified'}',
-                              ),
-                              if (payment['referenceNumber'] != null)
-                                Text('Ref: ${payment['referenceNumber']}'),
-                              if (payment['note'] != null)
-                                Text('Note: ${payment['note']}'),
-                              Text(
-                                'Date: ${_formatDate((payment['date'] as Timestamp).toDate())}',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              size: 18,
-                              color: Colors.blue,
-                            ),
-                            onPressed: () async {
-                              final result = await showDialog(
-                                context: context,
-                                builder: (context) => EditPaymentDialog(
-                                  order: widget.order,
-                                  userCurrency: widget.userCurrency,
-                                  paymentTransaction: payment,
-                                ),
-                              );
-
-                              if (result != null && mounted) {
-                                await _loadPaymentHistory();
-                              }
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'Close',
+                  style: TextStyle(color: Color(0xFF1976D2)),
+                ),
               ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('Close'),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -1230,108 +1479,252 @@ class _DeliveryHistoryDialogState extends State<DeliveryHistoryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Row(
-        children: [
-          Icon(Icons.history, color: Colors.blue),
-          SizedBox(width: 10),
-          Text('Delivery History'),
-        ],
-      ),
-      content: Container(
-        width: double.maxFinite,
-        child: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : _deliveryHistory.isEmpty
-            ? Center(child: Text('No delivery history found'))
-            : Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total Delivered:',
-                        style: TextStyle(fontWeight: FontWeight.bold),
+    return Dialog(
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Delivery History',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1565C0),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.close, color: Color(0xFF1565C0)),
+                  onPressed: () => Navigator.pop(context),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Order Info Card - BLUE THEME
+            Card(
+              color: const Color(0xFFE3F2FD),
+              elevation: 2,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+                side: const BorderSide(color: Color(0xFFBBDEFB), width: 1),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(12.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.order.customerName,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1565C0),
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'Total: ${widget.order.quantity.toStringAsFixed(2)} ${widget.order.productCode}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Color(0xFF1976D2),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
                       ),
-                      Text(
-                        '${widget.order.deliveredQuantity.toStringAsFixed(2)} ${widget.order.productCode}',
+                      decoration: BoxDecoration(
+                        color: widget.order.isFullyDelivered
+                            ? const Color(0xFFE8F5E9)
+                            : const Color(0xFFFFF3E0),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(
+                          color: widget.order.isFullyDelivered
+                              ? const Color(0xFFC8E6C9)
+                              : const Color(0xFFFFE0B2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Text(
+                        widget.order.isFullyDelivered
+                            ? 'Fully Delivered'
+                            : 'Partially Delivered',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
+                          fontSize: 11,
+                          fontWeight: FontWeight.w500,
+                          color: widget.order.isFullyDelivered
+                              ? const Color(0xFF388E3C)
+                              : const Color(0xFFF57C00),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            _isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(0xFF1565C0),
+                      ),
+                    ),
+                  )
+                : _deliveryHistory.isEmpty
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        children: [
+                          Icon(
+                            Icons.history,
+                            size: 48,
+                            color: Colors.grey[400],
+                          ),
+                          const SizedBox(height: 8),
+                          const Text(
+                            'No delivery history found',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Total Delivered:',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            '${widget.order.deliveredQuantity.toStringAsFixed(2)} ${widget.order.productCode}',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1976D2),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          itemCount: _deliveryHistory.length,
+                          itemBuilder: (context, index) {
+                            final delivery = _deliveryHistory[index];
+                            return Card(
+                              margin: const EdgeInsets.only(bottom: 8),
+                              color: const Color(0xFFF0F8FF),
+                              elevation: 1,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                                side: const BorderSide(
+                                  color: Color(0xFFBBDEFB),
+                                  width: 1,
+                                ),
+                              ),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: const Color(0xFFE3F2FD),
+                                  child: Icon(
+                                    Icons.local_shipping,
+                                    size: 20,
+                                    color: const Color(0xFF1976D2),
+                                  ),
+                                ),
+                                title: Text(
+                                  '${(delivery['quantity'] as num).toStringAsFixed(2)} ${widget.order.productCode}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF1976D2),
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    if (delivery['trackingNumber'] != null)
+                                      Text(
+                                        'Tracking: ${delivery['trackingNumber']}',
+                                        style: const TextStyle(
+                                          color: Color(0xFF1976D2),
+                                        ),
+                                      ),
+                                    if (delivery['note'] != null)
+                                      Text(
+                                        'Note: ${delivery['note']}',
+                                        style: const TextStyle(
+                                          color: Color(0xFF1976D2),
+                                        ),
+                                      ),
+                                    Text(
+                                      'Date: ${_formatDate((delivery['date'] as Timestamp).toDate())}',
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                trailing: IconButton(
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    size: 18,
+                                    color: Color(0xFF1976D2),
+                                  ),
+                                  onPressed: () async {
+                                    final result = await showDialog(
+                                      context: context,
+                                      builder: (context) => EditDeliveryDialog(
+                                        order: widget.order,
+                                        deliveryTransaction: delivery,
+                                      ),
+                                    );
+
+                                    if (result != null && mounted) {
+                                      await _loadDeliveryHistory();
+                                    }
+                                  },
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 10),
-                  Container(
-                    height: 200,
-                    child: ListView.builder(
-                      itemCount: _deliveryHistory.length,
-                      itemBuilder: (context, index) {
-                        final delivery = _deliveryHistory[index];
-                        return ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.blue[100],
-                            child: Icon(
-                              Icons.local_shipping,
-                              size: 20,
-                              color: Colors.blue,
-                            ),
-                          ),
-                          title: Text(
-                            '${(delivery['quantity'] as num).toStringAsFixed(2)} ${widget.order.productCode}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (delivery['trackingNumber'] != null)
-                                Text('Tracking: ${delivery['trackingNumber']}'),
-                              if (delivery['note'] != null)
-                                Text('Note: ${delivery['note']}'),
-                              Text(
-                                'Date: ${_formatDate((delivery['date'] as Timestamp).toDate())}',
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
-                          trailing: IconButton(
-                            icon: Icon(
-                              Icons.edit,
-                              size: 18,
-                              color: Colors.blue,
-                            ),
-                            onPressed: () async {
-                              final result = await showDialog(
-                                context: context,
-                                builder: (context) => EditDeliveryDialog(
-                                  order: widget.order,
-                                  deliveryTransaction: delivery,
-                                ),
-                              );
-
-                              if (result != null && mounted) {
-                                await _loadDeliveryHistory();
-                              }
-                            },
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 16),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text(
+                  'Close',
+                  style: TextStyle(color: Color(0xFF1976D2)),
+                ),
               ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: Text('Close'),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
@@ -1400,10 +1793,11 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
     final paidPercentage = order.paymentPercentage;
 
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: Row(
         children: [
           Icon(Icons.edit, color: _isEditing ? Colors.orange : Colors.green),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Text(_isEditing ? 'Edit Payment' : 'Add Payment'),
         ],
       ),
@@ -1414,9 +1808,9 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Payment Summary
+              // Payment Summary - BLUE THEME
               Card(
-                color: Colors.green[50],
+                color: const Color(0xFFE3F2FD),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -1424,62 +1818,77 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total Amount:'),
+                          const Text(
+                            'Total Amount:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               order.totalAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF0D47A1),
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Already Paid:'),
+                          const Text(
+                            'Already Paid:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               order.paymentReceivedAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(color: Colors.green[700]),
+                            style: const TextStyle(color: Color(0xFF388E3C)),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Pending:'),
+                          const Text(
+                            'Pending:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               pendingAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(color: Colors.orange[700]),
+                            style: const TextStyle(color: Color(0xFFF57C00)),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       LinearProgressIndicator(
                         value: paidPercentage / 100,
                         backgroundColor: Colors.grey[300],
                         color: Colors.green,
                         minHeight: 8,
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         '${paidPercentage.toStringAsFixed(1)}% Paid',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Payment Amount
               TextFormField(
@@ -1487,8 +1896,8 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
                 decoration: InputDecoration(
                   labelText: 'Payment Amount*',
                   hintText: 'Enter amount',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.attach_money),
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.attach_money),
                   suffixText: widget.userCurrency,
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -1510,11 +1919,11 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Payment Method
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Payment Method',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.payment),
@@ -1538,12 +1947,12 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Reference Number
               TextFormField(
                 controller: _referenceController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Reference Number (Optional)',
                   hintText: 'e.g., Transaction ID, Cheque No.',
                   border: OutlineInputBorder(),
@@ -1551,12 +1960,12 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
                 ),
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Note
               TextFormField(
                 controller: _noteController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Note (Optional)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.note),
@@ -1574,18 +1983,18 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
               final confirmed = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Delete Payment'),
-                  content: Text(
+                  title: const Text('Delete Payment'),
+                  content: const Text(
                     'Are you sure you want to delete this payment record?',
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: Text(
+                      child: const Text(
                         'Delete',
                         style: TextStyle(color: Colors.red),
                       ),
@@ -1598,14 +2007,14 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
                 Navigator.pop(context, {'deleted': true});
               }
             },
-            child: Text('Delete', style: TextStyle(color: Colors.red)),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         _isProcessing
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () async {
                   if (!_formKey.currentState!.validate()) return;
@@ -1636,7 +2045,7 @@ class _EditPaymentDialogState extends State<EditPaymentDialog> {
                       if (success && context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Payment updated successfully'),
+                            content: const Text('Payment updated successfully'),
                             backgroundColor: Colors.green,
                           ),
                         );
@@ -1761,10 +2170,11 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
     final deliveredPercentage = order.deliveryPercentage;
 
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: Row(
         children: [
           Icon(Icons.edit, color: _isEditing ? Colors.orange : Colors.blue),
-          SizedBox(width: 10),
+          const SizedBox(width: 10),
           Text(_isEditing ? 'Edit Delivery' : 'Add Delivery'),
         ],
       ),
@@ -1775,9 +2185,9 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Delivery Summary
+              // Delivery Summary - BLUE THEME
               Card(
-                color: Colors.blue[50],
+                color: const Color(0xFFE3F2FD),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -1785,53 +2195,68 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total Quantity:'),
+                          const Text(
+                            'Total Quantity:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             '${order.quantity.toStringAsFixed(2)} ${order.productCode}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF0D47A1),
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Already Delivered:'),
+                          const Text(
+                            'Already Delivered:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             '${order.deliveredQuantity.toStringAsFixed(2)} ${order.productCode}',
-                            style: TextStyle(color: Colors.blue[700]),
+                            style: const TextStyle(color: Color(0xFF1976D2)),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Pending:'),
+                          const Text(
+                            'Pending:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             '${pendingQuantity.toStringAsFixed(2)} ${order.productCode}',
-                            style: TextStyle(color: Colors.orange[700]),
+                            style: const TextStyle(color: Color(0xFFF57C00)),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       LinearProgressIndicator(
                         value: deliveredPercentage / 100,
                         backgroundColor: Colors.grey[300],
                         color: Colors.blue,
                         minHeight: 8,
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         '${deliveredPercentage.toStringAsFixed(1)}% Delivered',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Delivery Quantity
               TextFormField(
@@ -1839,8 +2264,8 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
                 decoration: InputDecoration(
                   labelText: 'Delivery Quantity*',
                   hintText: 'Enter quantity',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.format_list_numbered),
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.format_list_numbered),
                   suffixText: order.productCode,
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -1862,12 +2287,12 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Tracking Number
               TextFormField(
                 controller: _trackingController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Tracking Number (Optional)',
                   hintText: 'e.g., AWB, Tracking ID',
                   border: OutlineInputBorder(),
@@ -1875,12 +2300,12 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
                 ),
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Note
               TextFormField(
                 controller: _noteController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Note (Optional)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.note),
@@ -1898,18 +2323,18 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
               final confirmed = await showDialog<bool>(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: Text('Delete Delivery'),
-                  content: Text(
+                  title: const Text('Delete Delivery'),
+                  content: const Text(
                     'Are you sure you want to delete this delivery record?',
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
-                      child: Text('Cancel'),
+                      child: const Text('Cancel'),
                     ),
                     TextButton(
                       onPressed: () => Navigator.pop(context, true),
-                      child: Text(
+                      child: const Text(
                         'Delete',
                         style: TextStyle(color: Colors.red),
                       ),
@@ -1922,14 +2347,14 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
                 Navigator.pop(context, {'deleted': true});
               }
             },
-            child: Text('Delete', style: TextStyle(color: Colors.red)),
+            child: const Text('Delete', style: TextStyle(color: Colors.red)),
           ),
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         _isProcessing
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () async {
                   if (!_formKey.currentState!.validate()) return;
@@ -1958,7 +2383,9 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
                       if (success && context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Delivery updated successfully'),
+                            content: const Text(
+                              'Delivery updated successfully',
+                            ),
                             backgroundColor: Colors.blue,
                           ),
                         );
@@ -2011,10 +2438,10 @@ class _EditDeliveryDialogState extends State<EditDeliveryDialog> {
                     }
                   }
                 },
-                child: Text(_isEditing ? 'Update Delivery' : 'Record Delivery'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _isEditing ? Colors.orange : Colors.blue,
                 ),
+                child: Text(_isEditing ? 'Update Delivery' : 'Record Delivery'),
               ),
       ],
     );
@@ -2073,11 +2500,12 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
     final paidPercentage = order.paymentPercentage;
 
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: Row(
         children: [
           Icon(Icons.payment, color: Colors.green),
-          SizedBox(width: 10),
-          Text('Add Payment'),
+          const SizedBox(width: 10),
+          const Text('Add Payment'),
         ],
       ),
       content: SingleChildScrollView(
@@ -2087,9 +2515,9 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Payment Summary
+              // Payment Summary - BLUE THEME
               Card(
-                color: Colors.green[50],
+                color: const Color(0xFFE3F2FD),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -2097,62 +2525,77 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total Amount:'),
+                          const Text(
+                            'Total Amount:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               order.totalAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF0D47A1),
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Already Paid:'),
+                          const Text(
+                            'Already Paid:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               order.paymentReceivedAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(color: Colors.green[700]),
+                            style: const TextStyle(color: Color(0xFF388E3C)),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Pending:'),
+                          const Text(
+                            'Pending:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             CurrencyHelper.formatAmount(
                               pendingAmount,
                               widget.userCurrency,
                             ),
-                            style: TextStyle(color: Colors.orange[700]),
+                            style: const TextStyle(color: Color(0xFFF57C00)),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       LinearProgressIndicator(
                         value: paidPercentage / 100,
                         backgroundColor: Colors.grey[300],
                         color: Colors.green,
                         minHeight: 8,
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         '${paidPercentage.toStringAsFixed(1)}% Paid',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Payment Amount
               TextFormField(
@@ -2160,8 +2603,8 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                 decoration: InputDecoration(
                   labelText: 'Payment Amount*',
                   hintText: 'Enter amount',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.attach_money),
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.attach_money),
                   suffixText: widget.userCurrency,
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -2183,11 +2626,11 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Payment Method
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Payment Method',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.payment),
@@ -2211,12 +2654,12 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Reference Number
               TextFormField(
                 controller: _referenceController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Reference Number (Optional)',
                   hintText: 'e.g., Transaction ID, Cheque No.',
                   border: OutlineInputBorder(),
@@ -2224,12 +2667,12 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                 ),
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Note
               TextFormField(
                 controller: _noteController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Note (Optional)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.note),
@@ -2243,10 +2686,10 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         _isProcessing
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () async {
                   if (!_formKey.currentState!.validate()) return;
@@ -2290,7 +2733,7 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Failed to record payment'),
+                            content: const Text('Failed to record payment'),
                             backgroundColor: Colors.red,
                           ),
                         );
@@ -2312,7 +2755,7 @@ class _PartialPaymentDialogState extends State<PartialPaymentDialog> {
                   }
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: Text('Record Payment'),
+                child: const Text('Record Payment'),
               ),
       ],
     );
@@ -2362,11 +2805,12 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
     final deliveredPercentage = order.deliveryPercentage;
 
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: Row(
         children: [
           Icon(Icons.local_shipping, color: Colors.blue),
-          SizedBox(width: 10),
-          Text('Add Delivery'),
+          const SizedBox(width: 10),
+          const Text('Add Delivery'),
         ],
       ),
       content: SingleChildScrollView(
@@ -2376,9 +2820,9 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Delivery Summary
+              // Delivery Summary - BLUE THEME
               Card(
-                color: Colors.blue[50],
+                color: const Color(0xFFE3F2FD),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Column(
@@ -2386,53 +2830,68 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total Quantity:'),
+                          const Text(
+                            'Total Quantity:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             '${order.quantity.toStringAsFixed(2)} ${order.productCode}',
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF0D47A1),
+                            ),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Already Delivered:'),
+                          const Text(
+                            'Already Delivered:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             '${order.deliveredQuantity.toStringAsFixed(2)} ${order.productCode}',
-                            style: TextStyle(color: Colors.blue[700]),
+                            style: const TextStyle(color: Color(0xFF1976D2)),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Pending:'),
+                          const Text(
+                            'Pending:',
+                            style: TextStyle(color: Color(0xFF1976D2)),
+                          ),
                           Text(
                             '${pendingQuantity.toStringAsFixed(2)} ${order.productCode}',
-                            style: TextStyle(color: Colors.orange[700]),
+                            style: const TextStyle(color: Color(0xFFF57C00)),
                           ),
                         ],
                       ),
-                      SizedBox(height: 8),
+                      const SizedBox(height: 8),
                       LinearProgressIndicator(
                         value: deliveredPercentage / 100,
                         backgroundColor: Colors.grey[300],
                         color: Colors.blue,
                         minHeight: 8,
                       ),
-                      SizedBox(height: 4),
+                      const SizedBox(height: 4),
                       Text(
                         '${deliveredPercentage.toStringAsFixed(1)}% Delivered',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
               // Delivery Quantity
               TextFormField(
@@ -2440,8 +2899,8 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
                 decoration: InputDecoration(
                   labelText: 'Delivery Quantity*',
                   hintText: 'Enter quantity',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.format_list_numbered),
+                  border: const OutlineInputBorder(),
+                  prefixIcon: const Icon(Icons.format_list_numbered),
                   suffixText: order.productCode,
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -2463,12 +2922,12 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
                 },
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Tracking Number
               TextFormField(
                 controller: _trackingController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Tracking Number (Optional)',
                   hintText: 'e.g., AWB, Tracking ID',
                   border: OutlineInputBorder(),
@@ -2476,12 +2935,12 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
                 ),
               ),
 
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
 
               // Note
               TextFormField(
                 controller: _noteController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Note (Optional)',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.note),
@@ -2495,10 +2954,10 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: Text('Cancel'),
+          child: const Text('Cancel'),
         ),
         _isProcessing
-            ? CircularProgressIndicator()
+            ? const CircularProgressIndicator()
             : ElevatedButton(
                 onPressed: () async {
                   if (!_formKey.currentState!.validate()) return;
@@ -2541,7 +3000,7 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Failed to record delivery'),
+                            content: const Text('Failed to record delivery'),
                             backgroundColor: Colors.red,
                           ),
                         );
@@ -2563,7 +3022,7 @@ class _PartialDeliveryDialogState extends State<PartialDeliveryDialog> {
                   }
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-                child: Text('Record Delivery'),
+                child: const Text('Record Delivery'),
               ),
       ],
     );
@@ -2596,13 +3055,13 @@ class DetailItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(label, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(
           value,
           style: TextStyle(
             fontSize: isTotal ? 16 : 14,
             fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-            color: isTotal ? Colors.green[800] : Colors.black,
+            color: isTotal ? const Color(0xFF388E3C) : Colors.black,
           ),
         ),
       ],
@@ -2627,7 +3086,7 @@ class StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Chip(
-      labelPadding: EdgeInsets.symmetric(horizontal: 4),
+      labelPadding: const EdgeInsets.symmetric(horizontal: 4),
       avatar: Icon(icon, size: 14, color: isActive ? Colors.white : color),
       label: Text(
         label,

@@ -11,15 +11,20 @@ class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF0F8FF), // Light blue background
       appBar: AppBar(
-        title: Text('Products/Currencies'),
+        backgroundColor: const Color(0xFF1565C0), // Dark blue
+        foregroundColor: Colors.white,
+        title: const Text('Products/Currencies'),
         actions: [
           IconButton(
-            icon: Icon(Icons.add),
+            icon: const Icon(Icons.add),
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => AddEditProductScreen()),
+                MaterialPageRoute(
+                  builder: (context) => const AddEditProductScreen(),
+                ),
               );
             },
           ),
@@ -28,7 +33,13 @@ class ProductsScreen extends StatelessWidget {
       body: Consumer<ProductProvider>(
         builder: (context, productProvider, child) {
           if (productProvider.isLoading) {
-            return Center(child: CircularProgressIndicator());
+            return Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                  Color(0xFF1976D2),
+                ), // Medium blue progress
+              ),
+            );
           }
 
           if (productProvider.products.isEmpty) {
@@ -36,16 +47,25 @@ class ProductsScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.currency_exchange, size: 80, color: Colors.grey),
-                  SizedBox(height: 20),
+                  Icon(
+                    Icons.currency_exchange,
+                    size: 80,
+                    color: Color(0xFFBBDEFB),
+                  ), // Light blue icon
+                  const SizedBox(height: 20),
                   Text(
                     'No products/currencies yet',
-                    style: TextStyle(fontSize: 18, color: Colors.grey),
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color(0xFF1976D2), // Medium blue text
+                    ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Text(
                     'Tap + to add your first product',
-                    style: TextStyle(color: Colors.grey[600]),
+                    style: TextStyle(
+                      color: Color(0xFF1976D2).withOpacity(0.7),
+                    ), // Medium blue text
                   ),
                 ],
               ),
@@ -53,7 +73,7 @@ class ProductsScreen extends StatelessWidget {
           }
 
           return ListView.builder(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             itemCount: productProvider.products.length,
             itemBuilder: (context, index) {
               Product product = productProvider.products[index];
@@ -79,37 +99,67 @@ class ProductCard extends StatelessWidget {
     );
 
     return Card(
-      margin: EdgeInsets.only(bottom: 10),
+      color: Colors.white,
+      margin: const EdgeInsets.only(bottom: 10),
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: BorderSide(color: Color(0xFFE3F2FD)), // Light blue border
+      ),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: Colors.blue[100],
-          child: Icon(Icons.currency_exchange, color: Colors.blue),
+          backgroundColor: Color(0xFFE3F2FD), // Light blue background
+          child: Icon(
+            Icons.currency_exchange,
+            color: Color(0xFF1976D2),
+          ), // Medium blue icon
         ),
         title: Text(
           product.productName,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF1565C0), // Dark blue text
+          ),
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 4),
-            Text('Code: ${product.productCode}'),
+            const SizedBox(height: 4),
+            Text(
+              'Code: ${product.productCode}',
+              style: TextStyle(color: Color(0xFF1976D2)), // Medium blue text
+            ),
             if (product.description != null && product.description!.isNotEmpty)
               Padding(
-                padding: EdgeInsets.only(top: 4),
+                padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   product.description!,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF1976D2),
+                  ), // Medium blue text
                 ),
               ),
-            SizedBox(height: 4),
+            const SizedBox(height: 4),
             Text(
               'Added: ${_formatDate(product.createdAt)}',
-              style: TextStyle(fontSize: 11, color: Colors.grey),
+              style: TextStyle(
+                fontSize: 11,
+                color: Color(0xFF1976D2).withOpacity(0.7),
+              ), // Medium blue text
             ),
           ],
         ),
         trailing: PopupMenuButton<String>(
+          icon: Icon(
+            Icons.more_vert,
+            color: Color(0xFF1976D2),
+          ), // Medium blue icon
+          color: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+            side: BorderSide(color: Color(0xFFE3F2FD)), // Light blue border
+          ),
           onSelected: (value) {
             if (value == 'edit') {
               Navigator.push(
@@ -123,8 +173,44 @@ class ProductCard extends StatelessWidget {
             }
           },
           itemBuilder: (context) => [
-            PopupMenuItem(value: 'edit', child: Text('Edit')),
-            PopupMenuItem(value: 'delete', child: Text('Delete')),
+            PopupMenuItem(
+              value: 'edit',
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.edit,
+                    color: Color(0xFF1976D2),
+                    size: 20,
+                  ), // Medium blue icon
+                  const SizedBox(width: 8),
+                  Text(
+                    'Edit',
+                    style: TextStyle(
+                      color: Color(0xFF1565C0),
+                    ), // Dark blue text
+                  ),
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: 'delete',
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.delete,
+                    color: Color(0xFF1976D2),
+                    size: 20,
+                  ), // Medium blue icon
+                  const SizedBox(width: 8),
+                  Text(
+                    'Delete',
+                    style: TextStyle(
+                      color: Color(0xFF1565C0),
+                    ), // Dark blue text
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -143,30 +229,55 @@ class ProductCard extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('Delete Product'),
+        title: Text(
+          'Delete Product',
+          style: TextStyle(color: Color(0xFF1565C0)), // Dark blue text
+        ),
         content: Text(
           'Are you sure you want to delete "${product.productName}"?',
+          style: TextStyle(color: Color(0xFF1976D2)), // Medium blue text
         ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: Color(0xFFE3F2FD)), // Light blue border
+        ),
+        backgroundColor: Colors.white,
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: Color(0xFF1976D2)), // Medium blue text
+            ),
           ),
-          TextButton(
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF1976D2), // Medium blue background
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+              ),
+            ),
             onPressed: () async {
               Navigator.pop(context);
               bool success = await productProvider.deleteProduct(product.id);
               if (success) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Product deleted successfully')),
+                  SnackBar(
+                    content: const Text('Product deleted successfully'),
+                    backgroundColor: Color(0xFF1976D2), // Medium blue
+                  ),
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Failed to delete product')),
+                  SnackBar(
+                    content: const Text('Failed to delete product'),
+                    backgroundColor: Color(0xFF1565C0), // Dark blue
+                  ),
                 );
               }
             },
-            child: Text('Delete', style: TextStyle(color: Colors.red)),
+            child: const Text('Delete'),
           ),
         ],
       ),

@@ -246,7 +246,7 @@ class _PartialPaymentBuyDialogState extends State<PartialPaymentBuyDialog> {
                 ),
                 dropdownColor: Colors.white,
                 style: const TextStyle(color: Color(0xFF0D47A1)),
-                value: _paymentMethod,
+                initialValue: _paymentMethod,
                 items: [
                   DropdownMenuItem(value: 'cash', child: const Text('Cash')),
                   DropdownMenuItem(
